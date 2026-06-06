@@ -1,0 +1,6402 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Robert Design System — Composants</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+<style>
+  /* ══════════════════════════════════════════════
+     ROBERT DESIGN SYSTEM — TOKENS
+     ══════════════════════════════════════════════ */
+  :root {
+    --r-primary: #3e5de7;
+    --r-primary-hover: #2d4bd6;
+    --r-primary-active: #1d3bc5;
+    --r-primary-light: #eef2ff;
+    --r-primary-border: #C7D2FE;
+    --r-primary-ghost: rgba(62, 93, 231, 0.08);
+    --r-text: #1e1e2d;
+    --r-text-heading: #0f172a;
+    --r-text-body: #334155;
+    --r-text-muted: #64748b;
+    --r-text-faint: #94a3b8;
+    --r-surface: #f8fafc;
+    --r-surface-alt: #f1f5f9;
+    --r-bg: #ffffff;
+    --r-border: #E5E7EB;
+    --r-border-strong: #cbd5e1;
+    --r-danger: #e11d48;
+    --r-danger-light: #fff1f2;
+    --r-danger-border: #fecdd3;
+    --r-warning: #b45309;
+    --r-warning-light: #fff7ed;
+    --r-warning-border: #fed7aa;
+    --r-success: #0f766e;
+    --r-success-light: #f0fdfa;
+    --r-success-border: #99f6e4;
+    --r-info: #1d4ed8;
+    --r-info-light: #eff6ff;
+    --r-info-border: #bfdbfe;
+    --r-radius-xs: 4px;
+    --r-radius-sm: 6px;
+    --r-radius-md: 8px;
+    --r-radius-lg: 12px;
+    --r-radius-xl: 14px;
+    --r-radius-full: 9999px;
+    --r-shadow-sm: 0 1px 3px rgba(15,23,42,0.04), 0 1px 2px rgba(15,23,42,0.06);
+    --r-shadow-md: 0 4px 12px rgba(15,23,42,0.06);
+    --r-shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.08);
+    --r-shadow-primary: 0 3px 10px rgba(67,84,245,0.15);
+    --r-font: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --r-mono: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+    --r-transition-fast: 0.12s ease;
+    --r-transition: 0.2s ease;
+    --r-transition-spring: 0.36s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--r-font);
+    background: var(--r-surface);
+    color: var(--r-text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .ds-page {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+  .ds-page-title {
+    font-size: 2rem;
+    font-weight: 780;
+    color: var(--r-text-heading);
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .ds-page-subtitle {
+    color: var(--r-text-muted);
+    font-size: 1.05rem;
+    margin-bottom: 48px;
+  }
+  .ds-section {
+    margin-bottom: 56px;
+  }
+  .ds-section-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--r-text-muted);
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--r-border);
+  }
+  .ds-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }
+  .ds-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+    min-width: 260px;
+  }
+  .ds-spacer { height: 8px; }
+
+  /* ══════════════════════════════════════════════
+     1. BOUTONS
+     ══════════════════════════════════════════════ */
+  .r-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-family: var(--r-font);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+    border: 1.5px solid transparent;
+    border-radius: var(--r-radius-sm);
+    cursor: pointer;
+    transition: all var(--r-transition);
+    white-space: nowrap;
+    user-select: none;
+  }
+  .r-btn .material-icons-round { font-size: 18px; }
+
+  /* Primary */
+  .r-btn-primary {
+    background: var(--r-primary);
+    color: #fff;
+    border-color: var(--r-primary);
+  }
+  .r-btn-primary:hover {
+    background: var(--r-primary-hover);
+    border-color: var(--r-primary-hover);
+    box-shadow: var(--r-shadow-primary);
+    transform: translateY(-1px);
+  }
+  .r-btn-primary:active {
+    background: var(--r-primary-active);
+    transform: translateY(0);
+    box-shadow: none;
+  }
+
+  /* Secondary */
+  .r-btn-secondary {
+    background: var(--r-bg);
+    color: var(--r-text-body);
+    border-color: var(--r-border);
+  }
+  .r-btn-secondary:hover {
+    border-color: var(--r-primary-border);
+    color: var(--r-primary);
+    background: var(--r-primary-light);
+  }
+
+  /* Ghost */
+  .r-btn-ghost {
+    background: transparent;
+    color: var(--r-text-body);
+    border-color: transparent;
+  }
+  .r-btn-ghost:hover {
+    background: var(--r-primary-ghost);
+    color: var(--r-primary);
+  }
+
+  /* Danger */
+  .r-btn-danger {
+    background: var(--r-danger);
+    color: #fff;
+    border-color: var(--r-danger);
+  }
+  .r-btn-danger:hover {
+    background: #be123c;
+    border-color: #be123c;
+    box-shadow: 0 3px 10px rgba(225, 29, 72, 0.2);
+    transform: translateY(-1px);
+  }
+
+  /* Danger Outline */
+  .r-btn-danger-outline {
+    background: var(--r-bg);
+    color: var(--r-danger);
+    border-color: var(--r-danger-border);
+  }
+  .r-btn-danger-outline:hover {
+    background: var(--r-danger-light);
+    border-color: var(--r-danger);
+  }
+
+  /* Sizes */
+  .r-btn-sm { padding: 6px 14px; font-size: 13px; }
+  .r-btn-lg { padding: 13px 28px; font-size: 15px; }
+  .r-btn-icon {
+    width: 38px; height: 38px;
+    padding: 0;
+    border-radius: var(--r-radius-sm);
+  }
+  .r-btn-icon.r-btn-sm { width: 32px; height: 32px; }
+
+  /* Disabled */
+  .r-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  /* ══════════════════════════════════════════════
+     2. BADGES / TAGS
+     ══════════════════════════════════════════════ */
+  .r-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: 650;
+    border-radius: var(--r-radius-full);
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+  .r-badge-primary   { background: var(--r-primary-light); color: var(--r-primary);  border: 1px solid var(--r-primary-border); }
+  .r-badge-success   { background: var(--r-success-light); color: var(--r-success);  border: 1px solid var(--r-success-border); }
+  .r-badge-warning   { background: var(--r-warning-light); color: var(--r-warning);  border: 1px solid var(--r-warning-border); }
+  .r-badge-danger    { background: var(--r-danger-light);  color: var(--r-danger);   border: 1px solid var(--r-danger-border); }
+  .r-badge-neutral   { background: var(--r-surface-alt);   color: var(--r-text-muted); border: 1px solid var(--r-border); }
+
+  .r-badge-dot::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+  }
+
+  /* Tag fermable */
+  .r-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    font-size: 13px;
+    font-weight: 550;
+    border-radius: var(--r-radius-sm);
+    background: var(--r-surface-alt);
+    color: var(--r-text-body);
+    border: 1px solid var(--r-border);
+    transition: all var(--r-transition);
+  }
+  .r-tag-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    color: var(--r-text-muted);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all var(--r-transition-fast);
+    line-height: 1;
+    padding: 0;
+    font-family: var(--r-font);
+  }
+  .r-tag-close:hover {
+    background: var(--r-danger-light);
+    color: var(--r-danger);
+  }
+
+  /* ══════════════════════════════════════════════
+     3. INPUTS
+     ══════════════════════════════════════════════ */
+  .r-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .r-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--r-text-body);
+  }
+  .r-label-optional {
+    font-weight: 450;
+    color: var(--r-text-faint);
+    font-size: 12px;
+  }
+  .r-input {
+    padding: 10px 14px;
+    font-family: var(--r-font);
+    font-size: 14px;
+    color: var(--r-text);
+    background: var(--r-bg);
+    border: 1.5px solid var(--r-border);
+    border-radius: var(--r-radius-sm);
+    outline: none;
+    transition: border-color var(--r-transition), box-shadow var(--r-transition);
+  }
+  .r-input::placeholder { color: var(--r-text-faint); }
+  .r-input:focus {
+    border-color: var(--r-primary);
+    box-shadow: 0 0 0 2px rgba(62, 93, 231, 0.12);
+  }
+  .r-input-error {
+    border-color: var(--r-danger) !important;
+    box-shadow: 0 0 0 2px rgba(225, 29, 72, 0.08) !important;
+  }
+  .r-input-hint {
+    font-size: 12px;
+    color: var(--r-text-muted);
+    margin-top: 2px;
+  }
+  .r-input-error-msg {
+    font-size: 12px;
+    color: var(--r-danger);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .r-input-with-icon {
+    position: relative;
+  }
+  .r-input-with-icon .r-input {
+    padding-left: 40px;
+  }
+  .r-input-with-icon .r-input-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--r-text-faint);
+    font-size: 20px;
+    pointer-events: none;
+    transition: color var(--r-transition);
+  }
+  .r-input-with-icon:focus-within .r-input-icon {
+    color: var(--r-primary);
+  }
+
+  /* Textarea */
+  .r-textarea {
+    padding: 10px 14px;
+    font-family: var(--r-font);
+    font-size: 14px;
+    color: var(--r-text);
+    background: var(--r-bg);
+    border: 1.5px solid var(--r-border);
+    border-radius: var(--r-radius-sm);
+    outline: none;
+    resize: vertical;
+    min-height: 90px;
+    line-height: 1.55;
+    transition: border-color var(--r-transition), box-shadow var(--r-transition);
+  }
+  .r-textarea:focus {
+    border-color: var(--r-primary);
+    box-shadow: 0 0 0 2px rgba(62, 93, 231, 0.12);
+  }
+
+  /* Select */
+  .r-select {
+    appearance: none;
+    padding: 10px 38px 10px 14px;
+    font-family: var(--r-font);
+    font-size: 14px;
+    color: var(--r-text);
+    background: var(--r-bg) url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2364748b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 14px center;
+    border: 1.5px solid var(--r-border);
+    border-radius: var(--r-radius-sm);
+    outline: none;
+    cursor: pointer;
+    transition: border-color var(--r-transition), box-shadow var(--r-transition);
+  }
+  .r-select:focus {
+    border-color: var(--r-primary);
+    box-shadow: 0 0 0 2px rgba(62, 93, 231, 0.12);
+  }
+
+  /* ══════════════════════════════════════════════
+     4. TOGGLE SWITCH
+     ══════════════════════════════════════════════ */
+  .r-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .r-toggle input { display: none; }
+  .r-toggle-track {
+    width: 42px;
+    height: 24px;
+    border-radius: var(--r-radius-full);
+    background: #d1d5db;
+    position: relative;
+    transition: background var(--r-transition);
+    flex-shrink: 0;
+  }
+  .r-toggle-track::after {
+    content: '';
+    position: absolute;
+    left: 3px; top: 3px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    transition: transform var(--r-transition-spring);
+  }
+  .r-toggle input:checked + .r-toggle-track {
+    background: var(--r-primary);
+  }
+  .r-toggle input:checked + .r-toggle-track::after {
+    transform: translateX(18px);
+  }
+  .r-toggle-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--r-text-body);
+  }
+
+  /* ══════════════════════════════════════════════
+     5. CHECKBOX & RADIO
+     ══════════════════════════════════════════════ */
+  .r-checkbox,
+  .r-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--r-text-body);
+    user-select: none;
+  }
+  .r-checkbox input,
+  .r-radio input { display: none; }
+
+  .r-checkbox-box {
+    width: 20px; height: 20px;
+    border: 1.5px solid var(--r-border-strong);
+    border-radius: var(--r-radius-xs);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--r-transition);
+    flex-shrink: 0;
+    background: var(--r-bg);
+  }
+  .r-checkbox-box svg {
+    width: 14px; height: 14px;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all var(--r-transition-spring);
+    color: #fff;
+  }
+  .r-checkbox input:checked + .r-checkbox-box {
+    background: var(--r-primary);
+    border-color: var(--r-primary);
+  }
+  .r-checkbox input:checked + .r-checkbox-box svg {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .r-radio-circle {
+    width: 20px; height: 20px;
+    border: 1.5px solid var(--r-border-strong);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--r-transition);
+    flex-shrink: 0;
+    background: var(--r-bg);
+  }
+  .r-radio-circle::after {
+    content: '';
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--r-primary);
+    opacity: 0;
+    transform: scale(0);
+    transition: all var(--r-transition-spring);
+  }
+  .r-radio input:checked + .r-radio-circle {
+    border-color: var(--r-primary);
+  }
+  .r-radio input:checked + .r-radio-circle::after {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* ══════════════════════════════════════════════
+     6. CARDS
+     ══════════════════════════════════════════════ */
+  .r-card {
+    background: var(--r-bg);
+    border: 1.5px solid var(--r-border);
+    border-radius: var(--r-radius-lg);
+    padding: 24px;
+    transition: border-color var(--r-transition), box-shadow var(--r-transition), transform var(--r-transition);
+  }
+  .r-card-interactive:hover {
+    border-color: var(--r-primary-border);
+    box-shadow: var(--r-shadow-primary);
+    transform: translateY(-2px);
+    cursor: pointer;
+  }
+  .r-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .r-card-title {
+    font-size: 1.03rem;
+    font-weight: 680;
+    color: var(--r-text-heading);
+  }
+  .r-card-desc {
+    font-size: 14px;
+    color: var(--r-text-muted);
+    line-height: 1.55;
+  }
+  .r-card-footer {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--r-border);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  /* Stat card */
+  .r-stat-card {
+    background: var(--r-bg);
+    border: 1.5px solid var(--r-border);
+    border-radius: var(--r-radius-lg);
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .r-stat-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--r-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .r-stat-value {
+    font-size: 1.8rem;
+    font-weight: 760;
+    color: var(--r-text-heading);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .r-stat-change {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .r-stat-change-up { color: var(--r-success); }
+  .r-stat-change-down { color: var(--r-danger); }
+
+  /* ══════════════════════════════════════════════
+     7. ALERTS / CALLOUTS
+     ══════════════════════════════════════════════ */
+  .r-alert {
+    display: flex;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: var(--r-radius-sm);
+    border: 1px solid;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .r-alert-icon {
+    flex-shrink: 0;
+    font-size: 20px;
+    margin-top: 1px;
+  }
+  .r-alert-content { flex: 1; }
+  .r-alert-title {
+    font-weight: 650;
+    margin-bottom: 2px;
+  }
+
+  .r-alert-info {
+    background: var(--r-info-light);
+    border-color: var(--r-info-border);
+    color: var(--r-info);
+  }
+  .r-alert-success {
+    background: var(--r-success-light);
+    border-color: var(--r-success-border);
+    color: var(--r-success);
+  }
+  .r-alert-warning {
+    background: var(--r-warning-light);
+    border-color: var(--r-warning-border);
+    color: var(--r-warning);
+  }
+  .r-alert-danger {
+    background: var(--r-danger-light);
+    border-color: var(--r-danger-border);
+    color: var(--r-danger);
+  }
+
+  /* ══════════════════════════════════════════════
+     8. AVATAR
+     ══════════════════════════════════════════════ */
+  .r-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: 650;
+    color: #fff;
+    background: var(--r-primary);
+    flex-shrink: 0;
+    overflow: hidden;
+    user-select: none;
+  }
+  .r-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .r-avatar-xs { width: 24px; height: 24px; font-size: 10px; }
+  .r-avatar-sm { width: 32px; height: 32px; font-size: 12px; }
+  .r-avatar-md { width: 40px; height: 40px; font-size: 14px; }
+  .r-avatar-lg { width: 52px; height: 52px; font-size: 18px; }
+  .r-avatar-xl { width: 72px; height: 72px; font-size: 24px; }
+
+  .r-avatar-group {
+    display: flex;
+  }
+  .r-avatar-group .r-avatar {
+    border: 2px solid var(--r-bg);
+    margin-left: -10px;
+  }
+  .r-avatar-group .r-avatar:first-child { margin-left: 0; }
+
+  /* ══════════════════════════════════════════════
+     9. TABS
+     ══════════════════════════════════════════════ */
+  .r-tabs {
+    display: flex;
+    gap: 2px;
+    border-bottom: 1.5px solid var(--r-border);
+  }
+  .r-tab {
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 550;
+    color: var(--r-text-muted);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: all var(--r-transition);
+    margin-bottom: -1.5px;
+    font-family: var(--r-font);
+  }
+  .r-tab:hover { color: var(--r-text); }
+  .r-tab.is-active {
+    color: var(--r-primary);
+    border-bottom-color: var(--r-primary);
+    font-weight: 650;
+  }
+
+  /* Pill tabs */
+  .r-tabs-pill {
+    display: inline-flex;
+    gap: 4px;
+    background: var(--r-surface-alt);
+    border-radius: var(--r-radius-md);
+    padding: 4px;
+    border: none;
+  }
+  .r-tab-pill {
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--r-text-muted);
+    background: none;
+    border: none;
+    border-radius: var(--r-radius-sm);
+    cursor: pointer;
+    transition: all var(--r-transition);
+    font-family: var(--r-font);
+  }
+  .r-tab-pill:hover { color: var(--r-text); }
+  .r-tab-pill.is-active {
+    background: var(--r-bg);
+    color: var(--r-text);
+    box-shadow: var(--r-shadow-sm);
+  }
+
+  /* ══════════════════════════════════════════════
+     10. PROGRESS BAR
+     ══════════════════════════════════════════════ */
+  .r-progress {
+    width: 100%;
+    height: 8px;
+    background: var(--r-surface-alt);
+    border-radius: var(--r-radius-full);
+    overflow: hidden;
+  }
+  .r-progress-bar {
+    height: 100%;
+    border-radius: var(--r-radius-full);
+    background: var(--r-primary);
+    transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .r-progress-bar-success { background: var(--r-success); }
+  .r-progress-bar-warning { background: var(--r-warning); }
+  .r-progress-bar-danger  { background: var(--r-danger); }
+
+  .r-progress-labeled {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .r-progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .r-progress-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--r-text-body);
+  }
+  .r-progress-value {
+    font-size: 13px;
+    font-weight: 650;
+    color: var(--r-text-muted);
+  }
+
+  /* ══════════════════════════════════════════════
+     11. TOAST
+     ══════════════════════════════════════════════ */
+  .r-toast {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: var(--r-radius-lg);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--r-border);
+    box-shadow: var(--r-shadow-lg);
+    max-width: 380px;
+    width: 100%;
+    animation: toastIn 0.3s var(--r-transition-spring);
+  }
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateY(-10px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .r-toast-icon { flex-shrink: 0; font-size: 20px; margin-top: 1px; }
+  .r-toast-body { flex: 1; }
+  .r-toast-title { font-size: 14px; font-weight: 650; color: var(--r-text-heading); }
+  .r-toast-msg { font-size: 13px; color: var(--r-text-muted); margin-top: 2px; line-height: 1.45; }
+  .r-toast-close {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--r-text-faint);
+    border-radius: var(--r-radius-xs);
+    transition: all var(--r-transition-fast);
+    font-family: var(--r-font);
+  }
+  .r-toast-close:hover {
+    background: var(--r-surface-alt);
+    color: var(--r-text);
+  }
+
+  /* ══════════════════════════════════════════════
+     12. MODAL
+     ══════════════════════════════════════════════ */
+  .r-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.35);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 24px;
+  }
+  .r-modal {
+    background: var(--r-bg);
+    border-radius: var(--r-radius-lg);
+    border: 1px solid var(--r-border);
+    box-shadow: var(--r-shadow-lg);
+    width: 100%;
+    max-width: 480px;
+    animation: modalIn 0.25s ease-out;
+    overflow: hidden;
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.95) translateY(8px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .r-modal-header {
+    padding: 20px 24px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .r-modal-title {
+    font-size: 1.12rem;
+    font-weight: 700;
+    color: var(--r-text-heading);
+  }
+  .r-modal-body {
+    padding: 16px 24px;
+    font-size: 14px;
+    color: var(--r-text-body);
+    line-height: 1.6;
+  }
+  .r-modal-footer {
+    padding: 0 24px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  /* ══════════════════════════════════════════════
+     13. DROPDOWN MENU
+     ══════════════════════════════════════════════ */
+  .r-dropdown {
+    position: relative;
+    display: inline-flex;
+  }
+  .r-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    width: 200px;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border-radius: var(--r-radius-lg);
+    border: 1px solid rgba(226,232,240,0.8);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: var(--r-shadow-lg);
+    z-index: 50;
+    animation: dropIn 0.15s ease-out;
+  }
+  @keyframes dropIn {
+    from { opacity: 0; transform: translateY(-4px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .r-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: var(--r-radius-md);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--r-text-body);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: all var(--r-transition-fast);
+    font-family: var(--r-font);
+    text-align: left;
+    width: 100%;
+  }
+  .r-dropdown-item:hover {
+    background: var(--r-primary-light);
+    color: var(--r-primary);
+  }
+  .r-dropdown-item.danger:hover {
+    background: var(--r-danger-light);
+    color: var(--r-danger);
+  }
+  .r-dropdown-item .material-icons-round { font-size: 18px; }
+  .r-dropdown-sep {
+    height: 1px;
+    margin: 4px 0;
+    background: var(--r-border);
+  }
+
+  /* ══════════════════════════════════════════════
+     14. BREADCRUMBS
+     ══════════════════════════════════════════════ */
+  .r-breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+  }
+  .r-breadcrumb-item {
+    color: var(--r-text-muted);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color var(--r-transition-fast);
+  }
+  a.r-breadcrumb-item:hover { color: var(--r-primary); }
+  .r-breadcrumb-item.is-current {
+    color: var(--r-text);
+    font-weight: 600;
+  }
+  .r-breadcrumb-sep {
+    color: var(--r-text-faint);
+    font-size: 12px;
+    user-select: none;
+  }
+
+  /* ══════════════════════════════════════════════
+     15. PAGINATION
+     ══════════════════════════════════════════════ */
+  .r-pagination {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .r-page-btn {
+    min-width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid var(--r-border);
+    border-radius: var(--r-radius-sm);
+    background: var(--r-bg);
+    color: var(--r-text-body);
+    font-size: 14px;
+    font-weight: 550;
+    cursor: pointer;
+    transition: all var(--r-transition);
+    font-family: var(--r-font);
+    padding: 0 8px;
+  }
+  .r-page-btn:hover {
+    border-color: var(--r-primary-border);
+    color: var(--r-primary);
+    background: var(--r-primary-light);
+  }
+  .r-page-btn.is-active {
+    background: var(--r-primary);
+    border-color: var(--r-primary);
+    color: #fff;
+  }
+  .r-page-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .r-page-ellipsis {
+    min-width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--r-text-faint);
+    font-size: 14px;
+    user-select: none;
+  }
+
+  /* ══════════════════════════════════════════════
+     16. ACCORDION
+     ══════════════════════════════════════════════ */
+  .r-accordion {
+    border: 1.5px solid var(--r-border);
+    border-radius: var(--r-radius-lg);
+    overflow: hidden;
+    background: var(--r-bg);
+  }
+  .r-accordion-item { border-bottom: 1px solid var(--r-border); }
+  .r-accordion-item:last-child { border-bottom: none; }
+  .r-accordion-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    font-family: var(--r-font);
+    font-size: 14px;
+    font-weight: 620;
+    color: var(--r-text-heading);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background var(--r-transition-fast);
+    text-align: left;
+  }
+  .r-accordion-trigger:hover { background: var(--r-surface); }
+  .r-accordion-chevron {
+    font-size: 20px;
+    color: var(--r-text-faint);
+    transition: transform var(--r-transition-spring);
+  }
+  .r-accordion-item.is-open .r-accordion-chevron {
+    transform: rotate(180deg);
+  }
+  .r-accordion-body {
+    padding: 0 20px 16px;
+    font-size: 14px;
+    color: var(--r-text-body);
+    line-height: 1.6;
+  }
+
+  /* ══════════════════════════════════════════════
+     17. STEPPER
+     ══════════════════════════════════════════════ */
+  .r-stepper {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .r-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+  }
+  .r-step-circle {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    border: 2px solid var(--r-border);
+    background: var(--r-bg);
+    color: var(--r-text-faint);
+    flex-shrink: 0;
+    transition: all var(--r-transition);
+  }
+  .r-step.is-active .r-step-circle {
+    border-color: var(--r-primary);
+    background: var(--r-primary);
+    color: #fff;
+  }
+  .r-step.is-done .r-step-circle {
+    border-color: var(--r-primary);
+    background: var(--r-primary-light);
+    color: var(--r-primary);
+  }
+  .r-step-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--r-text-muted);
+    white-space: nowrap;
+  }
+  .r-step.is-active .r-step-label { color: var(--r-text); }
+  .r-step.is-done .r-step-label { color: var(--r-primary); }
+  .r-step-connector {
+    width: 48px;
+    height: 2px;
+    background: var(--r-border);
+    margin: 0 8px;
+    border-radius: 1px;
+    flex-shrink: 0;
+  }
+  .r-step-connector.is-done { background: var(--r-primary-border); }
+
+  /* ══════════════════════════════════════════════
+     18. FILE UPLOAD ZONE
+     ══════════════════════════════════════════════ */
+  .r-dropzone {
+    border: 2px dashed var(--r-border);
+    border-radius: var(--r-radius-lg);
+    padding: 40px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--r-transition);
+    background: var(--r-bg);
+  }
+  .r-dropzone:hover,
+  .r-dropzone.is-active {
+    border-color: var(--r-primary);
+    background: var(--r-primary-light);
+  }
+  .r-dropzone-icon {
+    font-size: 36px;
+    color: var(--r-text-faint);
+    transition: color var(--r-transition);
+  }
+  .r-dropzone:hover .r-dropzone-icon,
+  .r-dropzone.is-active .r-dropzone-icon { color: var(--r-primary); }
+  .r-dropzone-title {
+    font-size: 15px;
+    font-weight: 650;
+    color: var(--r-text-heading);
+  }
+  .r-dropzone-hint {
+    font-size: 13px;
+    color: var(--r-text-muted);
+  }
+
+  /* ══════════════════════════════════════════════
+     19. SKELETON LOADERS
+     ══════════════════════════════════════════════ */
+  @keyframes r-shimmer {
+    0%   { background-position: -600px 0; }
+    100% { background-position:  600px 0; }
+  }
+  .r-skeleton {
+    background: linear-gradient(90deg, #E5E7EB 25%, #F1F3F5 50%, #E5E7EB 75%);
+    background-size: 1200px 100%;
+    border-radius: var(--r-radius-sm);
+    animation: r-shimmer 1.6s infinite linear;
+  }
+  .r-skeleton-text { height: 14px; width: 100%; }
+  .r-skeleton-text-sm { height: 11px; width: 60%; }
+  .r-skeleton-heading { height: 22px; width: 45%; }
+  .r-skeleton-avatar { width: 40px; height: 40px; border-radius: 50%; }
+  .r-skeleton-card {
+    height: 120px;
+    width: 100%;
+    border-radius: var(--r-radius-lg);
+  }
+
+  /* ══════════════════════════════════════════════
+     20. TOOLTIP
+     ══════════════════════════════════════════════ */
+  .r-tip {
+    position: relative;
+    display: inline-flex;
+  }
+  .r-tip::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) scale(0.92);
+    background: var(--r-text);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    padding: 5px 10px;
+    border-radius: var(--r-radius-sm);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.12s ease, transform 0.12s ease;
+    z-index: 99;
+  }
+  .r-tip::before {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: var(--r-text);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.12s ease;
+    z-index: 99;
+  }
+  .r-tip:hover::after,
+  .r-tip:hover::before {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+
+  /* ══════════════════════════════════════════════
+     21. DIVIDER
+     ══════════════════════════════════════════════ */
+  .r-divider {
+    border: none;
+    height: 1px;
+    background: var(--r-border);
+    margin: 16px 0;
+  }
+  .r-divider-label {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--r-text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .r-divider-label::before,
+  .r-divider-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--r-border);
+  }
+
+  /* ══════════════════════════════════════════════
+     22. EMPTY STATE
+     ══════════════════════════════════════════════ */
+  .r-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 48px 24px;
+    text-align: center;
+    animation: emptyStateFadeIn 0.5s ease-out;
+  }
+  .r-empty-icon {
+    font-size: 48px;
+    color: var(--r-text-faint);
+    opacity: 0.6;
+  }
+  .r-empty-title {
+    font-size: 1.1rem;
+    font-weight: 680;
+    color: var(--r-text-heading);
+  }
+  .r-empty-desc {
+    font-size: 14px;
+    color: var(--r-text-muted);
+    max-width: 340px;
+    line-height: 1.55;
+  }
+
+  /* ══════════════════════════════════════════════
+     23. LIST / SETTINGS ITEM
+     ══════════════════════════════════════════════ */
+  .r-list {
+    border: 1.5px solid var(--r-border);
+    border-radius: var(--r-radius-lg);
+    background: var(--r-bg);
+    overflow: hidden;
+  }
+  .r-list-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--r-border);
+    transition: background var(--r-transition-fast);
+  }
+  .r-list-item:last-child { border-bottom: none; }
+  .r-list-item:hover { background: var(--r-surface); }
+  .r-list-item-icon {
+    width: 38px; height: 38px;
+    border-radius: var(--r-radius-md);
+    background: var(--r-primary-light);
+    color: var(--r-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 20px;
+  }
+  .r-list-item-body { flex: 1; min-width: 0; }
+  .r-list-item-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--r-text-heading);
+  }
+  .r-list-item-subtitle {
+    font-size: 13px;
+    color: var(--r-text-muted);
+    margin-top: 1px;
+  }
+  .r-list-item-action { flex-shrink: 0; }
+
+  /* ══════════════════════════════════════════════
+     24. KBD
+     ══════════════════════════════════════════════ */
+  .r-kbd {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 7px;
+    font-family: var(--r-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--r-text-body);
+    background: var(--r-surface-alt);
+    border: 1px solid var(--r-border);
+    border-bottom-width: 2px;
+    border-radius: var(--r-radius-xs);
+    line-height: 1.4;
+  }
+
+  /* ══════════════════════════════════════════════
+     25. BANNER
+     ══════════════════════════════════════════════ */
+  .r-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    background: var(--r-primary);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 550;
+  }
+  .r-banner a { color: #fff; text-decoration: underline; font-weight: 650; }
+  .r-banner-dismiss {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.7);
+    font-size: 20px;
+    cursor: pointer;
+    transition: color var(--r-transition-fast);
+    display: flex;
+    font-family: var(--r-font);
+  }
+  .r-banner-dismiss:hover { color: #fff; }
+
+  /* ══════════════════════════════════════════════
+     26. COMMAND PALETTE ITEM
+     ══════════════════════════════════════════════ */
+  .r-cmd-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-radius: var(--r-radius-md);
+    cursor: pointer;
+    transition: background var(--r-transition-fast);
+  }
+  .r-cmd-item:hover { background: var(--r-primary-light); }
+  .r-cmd-item-icon {
+    width: 32px; height: 32px;
+    border-radius: var(--r-radius-sm);
+    background: var(--r-surface-alt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--r-text-muted);
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .r-cmd-item:hover .r-cmd-item-icon {
+    background: var(--r-primary-light);
+    color: var(--r-primary);
+  }
+  .r-cmd-item-label {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 550;
+    color: var(--r-text);
+  }
+  .r-cmd-item-shortcut {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  /* ══════════════════════════════════════════════
+     UTILITY
+     ══════════════════════════════════════════════ */
+  .ds-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .ds-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .ds-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  @media (max-width: 640px) {
+    .ds-grid-2, .ds-grid-3, .ds-grid-4 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="ds-page">
+
+  <h1 class="ds-page-title">Robert Design System</h1>
+  <p class="ds-page-subtitle">Composants réutilisables — cohérence totale avec le thème Robert.</p>
+
+  <!-- ═══════════ 1. BOUTONS ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">1 · Boutons</h2>
+    <div class="ds-row">
+      <button class="r-btn r-btn-primary">
+        <span class="material-icons-round">add</span> Nouveau chat
+      </button>
+      <button class="r-btn r-btn-secondary">
+        <span class="material-icons-round">tune</span> Configurer
+      </button>
+      <button class="r-btn r-btn-ghost">
+        <span class="material-icons-round">refresh</span> Régénérer
+      </button>
+      <button class="r-btn r-btn-danger">
+        <span class="material-icons-round">delete</span> Supprimer
+      </button>
+      <button class="r-btn r-btn-danger-outline">Annuler</button>
+    </div>
+    <div class="ds-row">
+      <button class="r-btn r-btn-primary r-btn-sm">Petit</button>
+      <button class="r-btn r-btn-primary">Normal</button>
+      <button class="r-btn r-btn-primary r-btn-lg">Grand</button>
+      <button class="r-btn r-btn-secondary r-btn-icon">
+        <span class="material-icons-round">content_copy</span>
+      </button>
+      <button class="r-btn r-btn-secondary r-btn-icon r-btn-sm">
+        <span class="material-icons-round">more_vert</span>
+      </button>
+      <button class="r-btn r-btn-primary" disabled>Désactivé</button>
+    </div>
+  </section>
+
+  <!-- ═══════════ 2. BADGES / TAGS ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">2 · Badges & Tags</h2>
+    <div class="ds-row">
+      <span class="r-badge r-badge-primary">Nouveau</span>
+      <span class="r-badge r-badge-success">Actif</span>
+      <span class="r-badge r-badge-warning">En attente</span>
+      <span class="r-badge r-badge-danger">Erreur</span>
+      <span class="r-badge r-badge-neutral">Brouillon</span>
+    </div>
+    <div class="ds-row">
+      <span class="r-badge r-badge-primary r-badge-dot">En ligne</span>
+      <span class="r-badge r-badge-success r-badge-dot">Connecté</span>
+      <span class="r-badge r-badge-danger r-badge-dot">Hors ligne</span>
+    </div>
+    <div class="ds-row">
+      <span class="r-tag">
+        Recherche web
+        <button class="r-tag-close">×</button>
+      </span>
+      <span class="r-tag">
+        GPT-4o
+        <button class="r-tag-close">×</button>
+      </span>
+      <span class="r-tag">
+        Français
+        <button class="r-tag-close">×</button>
+      </span>
+    </div>
+  </section>
+
+  <!-- ═══════════ 3. INPUTS ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">3 · Champs de saisie</h2>
+    <div class="ds-grid-2">
+      <div class="r-input-group">
+        <label class="r-label">Nom du projet</label>
+        <input class="r-input" type="text" placeholder="Mon projet IA...">
+        <span class="r-input-hint">Utilisé comme titre de la conversation.</span>
+      </div>
+      <div class="r-input-group">
+        <label class="r-label">Email <span class="r-label-optional">(requis)</span></label>
+        <input class="r-input r-input-error" type="email" value="invalide@">
+        <span class="r-input-error-msg">Veuillez entrer une adresse email valide.</span>
+      </div>
+    </div>
+    <div class="ds-spacer"></div>
+    <div class="ds-grid-2">
+      <div class="r-input-group">
+        <label class="r-label">Rechercher</label>
+        <div class="r-input-with-icon">
+          <span class="material-icons-round r-input-icon">search</span>
+          <input class="r-input" style="width:100%" type="text" placeholder="Tapez pour chercher…">
+        </div>
+      </div>
+      <div class="r-input-group">
+        <label class="r-label">Modèle</label>
+        <select class="r-select" style="width:100%">
+          <option>GPT-4o</option>
+          <option>Claude 3.5 Sonnet</option>
+          <option>Mistral Large</option>
+          <option>Llama 3</option>
+        </select>
+      </div>
+    </div>
+    <div class="ds-spacer"></div>
+    <div class="r-input-group">
+      <label class="r-label">Instructions système</label>
+      <textarea class="r-textarea" style="width:100%" placeholder="Décrivez le comportement souhaité…"></textarea>
+    </div>
+  </section>
+
+  <!-- ═══════════ 4. TOGGLE / CHECKBOX / RADIO ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">4 · Toggle, Checkbox & Radio</h2>
+    <div class="ds-row">
+      <label class="r-toggle">
+        <input type="checkbox" checked>
+        <span class="r-toggle-track"></span>
+        <span class="r-toggle-label">Recherche web</span>
+      </label>
+      <label class="r-toggle">
+        <input type="checkbox">
+        <span class="r-toggle-track"></span>
+        <span class="r-toggle-label">Mode sombre</span>
+      </label>
+    </div>
+    <div class="ds-row">
+      <label class="r-checkbox">
+        <input type="checkbox" checked>
+        <span class="r-checkbox-box">
+          <svg viewBox="0 0 14 14" fill="none"><path d="M3 7L6 10L11 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        Mémoriser le contexte
+      </label>
+      <label class="r-checkbox">
+        <input type="checkbox">
+        <span class="r-checkbox-box">
+          <svg viewBox="0 0 14 14" fill="none"><path d="M3 7L6 10L11 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        Activer les outils
+      </label>
+    </div>
+    <div class="ds-row">
+      <label class="r-radio">
+        <input type="radio" name="mode" checked>
+        <span class="r-radio-circle"></span>
+        Créatif
+      </label>
+      <label class="r-radio">
+        <input type="radio" name="mode">
+        <span class="r-radio-circle"></span>
+        Équilibré
+      </label>
+      <label class="r-radio">
+        <input type="radio" name="mode">
+        <span class="r-radio-circle"></span>
+        Précis
+      </label>
+    </div>
+  </section>
+
+  <!-- ═══════════ 5. CARDS ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">5 · Cartes</h2>
+    <div class="ds-grid-2">
+      <div class="r-card r-card-interactive">
+        <div class="r-card-header">
+          <span class="r-card-title">🔍 Recherche web</span>
+          <span class="r-badge r-badge-success r-badge-dot">Actif</span>
+        </div>
+        <p class="r-card-desc">Permet à Robert de rechercher des informations à jour sur internet pour enrichir ses réponses.</p>
+        <div class="r-card-footer">
+          <button class="r-btn r-btn-ghost r-btn-sm">Détails</button>
+          <button class="r-btn r-btn-primary r-btn-sm">Configurer</button>
+        </div>
+      </div>
+      <div class="r-card r-card-interactive">
+        <div class="r-card-header">
+          <span class="r-card-title">📄 Analyse de documents</span>
+          <span class="r-badge r-badge-neutral">Bêta</span>
+        </div>
+        <p class="r-card-desc">Envoyez des fichiers PDF, DOCX ou images et Robert analysera leur contenu en profondeur.</p>
+        <div class="r-card-footer">
+          <button class="r-btn r-btn-ghost r-btn-sm">Détails</button>
+          <button class="r-btn r-btn-secondary r-btn-sm">Activer</button>
+        </div>
+      </div>
+    </div>
+    <div class="ds-spacer"></div>
+    <div class="ds-grid-4">
+      <div class="r-stat-card">
+        <span class="r-stat-label">Messages</span>
+        <span class="r-stat-value">1,284</span>
+        <span class="r-stat-change r-stat-change-up">↑ 12% ce mois</span>
+      </div>
+      <div class="r-stat-card">
+        <span class="r-stat-label">Conversations</span>
+        <span class="r-stat-value">47</span>
+        <span class="r-stat-change r-stat-change-up">↑ 8%</span>
+      </div>
+      <div class="r-stat-card">
+        <span class="r-stat-label">Outils utilisés</span>
+        <span class="r-stat-value">156</span>
+        <span class="r-stat-change r-stat-change-down">↓ 3%</span>
+      </div>
+      <div class="r-stat-card">
+        <span class="r-stat-label">Temps moyen</span>
+        <span class="r-stat-value">2.4s</span>
+        <span class="r-stat-change r-stat-change-up">↑ 18%</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 6. ALERTS ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">6 · Alertes</h2>
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <div class="r-alert r-alert-info">
+        <span class="material-icons-round r-alert-icon">info</span>
+        <div class="r-alert-content">
+          <div class="r-alert-title">Information</div>
+          Robert utilise la recherche web pour cette conversation.
+        </div>
+      </div>
+      <div class="r-alert r-alert-success">
+        <span class="material-icons-round r-alert-icon">check_circle</span>
+        <div class="r-alert-content">
+          <div class="r-alert-title">Succès</div>
+          Votre configuration a été enregistrée avec succès.
+        </div>
+      </div>
+      <div class="r-alert r-alert-warning">
+        <span class="material-icons-round r-alert-icon">warning</span>
+        <div class="r-alert-content">
+          <div class="r-alert-title">Attention</div>
+          Vous approchez de la limite de votre plan. 85% des tokens utilisés.
+        </div>
+      </div>
+      <div class="r-alert r-alert-danger">
+        <span class="material-icons-round r-alert-icon">error</span>
+        <div class="r-alert-content">
+          <div class="r-alert-title">Erreur</div>
+          Impossible de contacter le serveur. Vérifiez votre connexion.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 7. AVATARS ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">7 · Avatars</h2>
+    <div class="ds-row" style="align-items:center;">
+      <span class="r-avatar r-avatar-xs">R</span>
+      <span class="r-avatar r-avatar-sm">JD</span>
+      <span class="r-avatar r-avatar-md">AB</span>
+      <span class="r-avatar r-avatar-lg" style="background:#0f766e;">MC</span>
+      <span class="r-avatar r-avatar-xl" style="background:#b45309;">LK</span>
+    </div>
+    <div class="ds-spacer"></div>
+    <div class="ds-row">
+      <div class="r-avatar-group">
+        <span class="r-avatar r-avatar-md">A</span>
+        <span class="r-avatar r-avatar-md" style="background:#0f766e;">B</span>
+        <span class="r-avatar r-avatar-md" style="background:#b45309;">C</span>
+        <span class="r-avatar r-avatar-md" style="background:#e11d48;">D</span>
+        <span class="r-avatar r-avatar-md" style="background:#64748b;">+3</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 8. TABS ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">8 · Onglets</h2>
+    <div class="r-tabs" style="margin-bottom:16px;">
+      <button class="r-tab is-active">Général</button>
+      <button class="r-tab">Apparence</button>
+      <button class="r-tab">Modèle IA</button>
+      <button class="r-tab">Outils</button>
+      <button class="r-tab">Avancé</button>
+    </div>
+    <div class="r-tabs-pill">
+      <button class="r-tab-pill is-active">Tous</button>
+      <button class="r-tab-pill">Favoris</button>
+      <button class="r-tab-pill">Récents</button>
+      <button class="r-tab-pill">Archivés</button>
+    </div>
+  </section>
+
+  <!-- ═══════════ 9. PROGRESS ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">9 · Barres de progression</h2>
+    <div style="display:flex; flex-direction:column; gap:20px;">
+      <div class="r-progress-labeled">
+        <div class="r-progress-header">
+          <span class="r-progress-label">Utilisation des tokens</span>
+          <span class="r-progress-value">68%</span>
+        </div>
+        <div class="r-progress"><div class="r-progress-bar" style="width:68%"></div></div>
+      </div>
+      <div class="r-progress-labeled">
+        <div class="r-progress-header">
+          <span class="r-progress-label">Stockage</span>
+          <span class="r-progress-value">92%</span>
+        </div>
+        <div class="r-progress"><div class="r-progress-bar r-progress-bar-warning" style="width:92%"></div></div>
+      </div>
+      <div class="r-progress-labeled">
+        <div class="r-progress-header">
+          <span class="r-progress-label">Upload en cours</span>
+          <span class="r-progress-value">35%</span>
+        </div>
+        <div class="r-progress"><div class="r-progress-bar r-progress-bar-success" style="width:35%"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 10. TOAST ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">10 · Toasts / Notifications</h2>
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <div class="r-toast">
+        <span class="material-icons-round r-toast-icon" style="color:#0f766e;">check_circle</span>
+        <div class="r-toast-body">
+          <div class="r-toast-title">Message copié</div>
+          <div class="r-toast-msg">Le contenu a été copié dans votre presse-papiers.</div>
+        </div>
+        <button class="r-toast-close">
+          <span class="material-icons-round" style="font-size:18px;">close</span>
+        </button>
+      </div>
+      <div class="r-toast">
+        <span class="material-icons-round r-toast-icon" style="color:#e11d48;">error</span>
+        <div class="r-toast-body">
+          <div class="r-toast-title">Échec de l'envoi</div>
+          <div class="r-toast-msg">Votre message n'a pas pu être envoyé. Réessayez.</div>
+        </div>
+        <button class="r-toast-close">
+          <span class="material-icons-round" style="font-size:18px;">close</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 11. MODAL ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">11 · Modale (statique)</h2>
+    <div style="background:rgba(15,23,42,0.08); border-radius:var(--r-radius-lg); padding:32px; display:flex; justify-content:center;">
+      <div class="r-modal" style="position:relative; animation:none;">
+        <div class="r-modal-header">
+          <span class="r-modal-title">Supprimer la conversation ?</span>
+          <button class="r-btn r-btn-ghost r-btn-icon r-btn-sm">
+            <span class="material-icons-round">close</span>
+          </button>
+        </div>
+        <div class="r-modal-body">
+          Cette action est irréversible. Tous les messages de cette conversation seront définitivement supprimés.
+        </div>
+        <div class="r-modal-footer">
+          <button class="r-btn r-btn-secondary">Annuler</button>
+          <button class="r-btn r-btn-danger">
+            <span class="material-icons-round">delete</span> Supprimer
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 12. DROPDOWN ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">12 · Menu déroulant (statique)</h2>
+    <div style="display:flex; gap:24px;">
+      <div class="r-dropdown-menu" style="position:relative; top:auto; right:auto;">
+        <button class="r-dropdown-item">
+          <span class="material-icons-round">edit</span> Renommer
+        </button>
+        <button class="r-dropdown-item">
+          <span class="material-icons-round">content_copy</span> Dupliquer
+        </button>
+        <button class="r-dropdown-item">
+          <span class="material-icons-round">push_pin</span> Épingler
+        </button>
+        <div class="r-dropdown-sep"></div>
+        <button class="r-dropdown-item danger">
+          <span class="material-icons-round">delete</span> Supprimer
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 13. BREADCRUMBS ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">13 · Fil d'Ariane</h2>
+    <nav class="r-breadcrumbs">
+      <a href="#" class="r-breadcrumb-item">Accueil</a>
+      <span class="r-breadcrumb-sep">›</span>
+      <a href="#" class="r-breadcrumb-item">Paramètres</a>
+      <span class="r-breadcrumb-sep">›</span>
+      <span class="r-breadcrumb-item is-current">Modèle IA</span>
+    </nav>
+  </section>
+
+  <!-- ═══════════ 14. PAGINATION ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">14 · Pagination</h2>
+    <nav class="r-pagination">
+      <button class="r-page-btn" disabled>
+        <span class="material-icons-round" style="font-size:18px;">chevron_left</span>
+      </button>
+      <button class="r-page-btn is-active">1</button>
+      <button class="r-page-btn">2</button>
+      <button class="r-page-btn">3</button>
+      <span class="r-page-ellipsis">…</span>
+      <button class="r-page-btn">12</button>
+      <button class="r-page-btn">
+        <span class="material-icons-round" style="font-size:18px;">chevron_right</span>
+      </button>
+    </nav>
+  </section>
+
+  <!-- ═══════════ 15. ACCORDION ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">15 · Accordéon</h2>
+    <div class="r-accordion">
+      <div class="r-accordion-item is-open">
+        <button class="r-accordion-trigger">
+          Comment fonctionne la recherche web ?
+          <span class="material-icons-round r-accordion-chevron">expand_more</span>
+        </button>
+        <div class="r-accordion-body">
+          Robert effectue une recherche internet en temps réel, sélectionne les sources les plus pertinentes, puis synthétise les informations pour construire sa réponse. Les sources sont citées automatiquement.
+        </div>
+      </div>
+      <div class="r-accordion-item">
+        <button class="r-accordion-trigger">
+          Quels modèles sont disponibles ?
+          <span class="material-icons-round r-accordion-chevron">expand_more</span>
+        </button>
+      </div>
+      <div class="r-accordion-item">
+        <button class="r-accordion-trigger">
+          Mes données sont-elles sécurisées ?
+          <span class="material-icons-round r-accordion-chevron">expand_more</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 16. STEPPER ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">16 · Étapes</h2>
+    <div class="r-stepper">
+      <div class="r-step is-done">
+        <span class="r-step-circle">
+          <span class="material-icons-round" style="font-size:16px;">check</span>
+        </span>
+        <span class="r-step-label">Inscription</span>
+      </div>
+      <span class="r-step-connector is-done"></span>
+      <div class="r-step is-active">
+        <span class="r-step-circle">2</span>
+        <span class="r-step-label">Configuration</span>
+      </div>
+      <span class="r-step-connector"></span>
+      <div class="r-step">
+        <span class="r-step-circle">3</span>
+        <span class="r-step-label">Premier chat</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 17. DROPZONE ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">17 · Zone de dépôt de fichiers</h2>
+    <div class="r-dropzone">
+      <span class="material-icons-round r-dropzone-icon">cloud_upload</span>
+      <span class="r-dropzone-title">Déposez vos fichiers ici</span>
+      <span class="r-dropzone-hint">ou <u>cliquez pour parcourir</u> — PDF, DOCX, images · 10 Mo max</span>
+    </div>
+  </section>
+
+  <!-- ═══════════ 18. SKELETON ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">18 · Skeleton loaders</h2>
+    <div class="r-card" style="display:flex; flex-direction:column; gap:12px;">
+      <div style="display:flex; gap:12px; align-items:center;">
+        <div class="r-skeleton r-skeleton-avatar"></div>
+        <div style="flex:1; display:flex; flex-direction:column; gap:6px;">
+          <div class="r-skeleton r-skeleton-heading"></div>
+          <div class="r-skeleton r-skeleton-text-sm"></div>
+        </div>
+      </div>
+      <div class="r-skeleton r-skeleton-text" style="width:100%"></div>
+      <div class="r-skeleton r-skeleton-text" style="width:88%"></div>
+      <div class="r-skeleton r-skeleton-text" style="width:72%"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 19. TOOLTIPS ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">19 · Tooltips</h2>
+    <div class="ds-row">
+      <span class="r-tip" data-tip="Copier le message">
+        <button class="r-btn r-btn-secondary r-btn-icon">
+          <span class="material-icons-round">content_copy</span>
+        </button>
+      </span>
+      <span class="r-tip" data-tip="Écouter la réponse">
+        <button class="r-btn r-btn-secondary r-btn-icon">
+          <span class="material-icons-round">volume_up</span>
+        </button>
+      </span>
+      <span class="r-tip" data-tip="Régénérer">
+        <button class="r-btn r-btn-secondary r-btn-icon">
+          <span class="material-icons-round">refresh</span>
+        </button>
+      </span>
+    </div>
+  </section>
+
+  <!-- ═══════════ 20. DIVIDERS ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">20 · Séparateurs</h2>
+    <hr class="r-divider">
+    <div class="r-divider-label">ou continuer avec</div>
+    <div class="ds-spacer"></div>
+    <div class="r-divider-label">fin de conversation</div>
+  </section>
+
+  <!-- ═══════════ 21. EMPTY STATE ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">21 · État vide</h2>
+    <div class="r-card">
+      <div class="r-empty">
+        <span class="material-icons-round r-empty-icon">chat_bubble_outline</span>
+        <span class="r-empty-title">Aucune conversation</span>
+        <span class="r-empty-desc">Commencez un nouveau chat avec Robert pour explorer les possibilités de l'IA.</span>
+        <button class="r-btn r-btn-primary" style="margin-top:8px;">
+          <span class="material-icons-round">add</span> Nouveau chat
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 22. LIST / SETTINGS ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">22 · Liste de paramètres</h2>
+    <div class="r-list">
+      <div class="r-list-item">
+        <span class="r-list-item-icon">
+          <span class="material-icons-round">language</span>
+        </span>
+        <div class="r-list-item-body">
+          <div class="r-list-item-title">Langue</div>
+          <div class="r-list-item-subtitle">Français — Réponses de Robert en français</div>
+        </div>
+        <div class="r-list-item-action">
+          <span class="material-icons-round" style="color:var(--r-text-faint);">chevron_right</span>
+        </div>
+      </div>
+      <div class="r-list-item">
+        <span class="r-list-item-icon" style="background:var(--r-success-light); color:var(--r-success);">
+          <span class="material-icons-round">search</span>
+        </span>
+        <div class="r-list-item-body">
+          <div class="r-list-item-title">Recherche web</div>
+          <div class="r-list-item-subtitle">Accès internet pour des réponses à jour</div>
+        </div>
+        <div class="r-list-item-action">
+          <label class="r-toggle" style="gap:0;">
+            <input type="checkbox" checked>
+            <span class="r-toggle-track"></span>
+          </label>
+        </div>
+      </div>
+      <div class="r-list-item">
+        <span class="r-list-item-icon" style="background:var(--r-warning-light); color:var(--r-warning);">
+          <span class="material-icons-round">memory</span>
+        </span>
+        <div class="r-list-item-body">
+          <div class="r-list-item-title">Mémoire</div>
+          <div class="r-list-item-subtitle">Robert retient le contexte entre les sessions</div>
+        </div>
+        <div class="r-list-item-action">
+          <label class="r-toggle" style="gap:0;">
+            <input type="checkbox">
+            <span class="r-toggle-track"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 23. KBD ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">23 · Raccourcis clavier</h2>
+    <div class="ds-row" style="align-items:center; gap:8px;">
+      <kbd class="r-kbd">⌘</kbd> + <kbd class="r-kbd">K</kbd>
+      <span style="color:var(--r-text-muted); font-size:14px; margin-left:8px;">Palette de commandes</span>
+    </div>
+    <div class="ds-row" style="align-items:center; gap:8px; margin-top:4px;">
+      <kbd class="r-kbd">⌘</kbd> + <kbd class="r-kbd">⇧</kbd> + <kbd class="r-kbd">N</kbd>
+      <span style="color:var(--r-text-muted); font-size:14px; margin-left:8px;">Nouvelle conversation</span>
+    </div>
+  </section>
+
+  <!-- ═══════════ 24. BANNER ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">24 · Bannière</h2>
+    <div class="r-banner" style="border-radius:var(--r-radius-md);">
+      <span class="material-icons-round" style="font-size:20px;">auto_awesome</span>
+      Nouveau : Robert supporte maintenant l'analyse d'images ! <a href="#">En savoir plus</a>
+      <button class="r-banner-dismiss">
+        <span class="material-icons-round">close</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ═══════════ 25. COMMAND PALETTE ITEMS ═══════════ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">25 · Items palette de commandes</h2>
+    <div class="r-card" style="padding:8px;">
+      <div class="r-cmd-item">
+        <span class="r-cmd-item-icon">
+          <span class="material-icons-round">add_comment</span>
+        </span>
+        <span class="r-cmd-item-label">Nouvelle conversation</span>
+        <span class="r-cmd-item-shortcut">
+          <kbd class="r-kbd">⌘</kbd><kbd class="r-kbd">N</kbd>
+        </span>
+      </div>
+      <div class="r-cmd-item">
+        <span class="r-cmd-item-icon">
+          <span class="material-icons-round">search</span>
+        </span>
+        <span class="r-cmd-item-label">Rechercher dans les chats</span>
+        <span class="r-cmd-item-shortcut">
+          <kbd class="r-kbd">⌘</kbd><kbd class="r-kbd">F</kbd>
+        </span>
+      </div>
+      <div class="r-cmd-item">
+        <span class="r-cmd-item-icon">
+          <span class="material-icons-round">settings</span>
+        </span>
+        <span class="r-cmd-item-label">Paramètres</span>
+        <span class="r-cmd-item-shortcut">
+          <kbd class="r-kbd">⌘</kbd><kbd class="r-kbd">,</kbd>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+     MOCKUP TCHAT WIDGET JS
+     ══════════════════════════════════════ -->
+
+     <div style="display:flex; justify-content:flex-end; padding:8px 0;">
+  <div class="r-msg-user">
+    <p>Quelle est la capitale du Japon ?</p>
+  </div>
+</div>
+
+<style>
+.r-msg-user {
+  max-width: 72%;
+  padding: 12px 18px;
+  background: var(--r-primary);
+  color: #fff;
+  border-radius: 18px 18px 4px 18px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  font-weight: 450;
+  box-shadow: 0 2px 8px rgba(62, 93, 231, 0.18);
+}
+.r-msg-user p { margin: 0; }
+</style>
+
+<div style="display:flex; gap:10px; padding:8px 0; align-items:flex-start;">
+  <div class="r-msg-avatar">R</div>
+  <div class="r-msg-assistant">
+    <p>La capitale du Japon est <strong>Tokyo</strong>.</p>
+  </div>
+</div>
+
+<style>
+.r-msg-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--r-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.r-msg-assistant {
+  max-width: 76ch;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--r-text-body);
+}
+.r-msg-assistant p { margin: 0 0 12px; }
+.r-msg-assistant p:last-child { margin-bottom: 0; }
+.r-msg-assistant strong { font-weight: 650; color: var(--r-text-heading); }
+</style>
+
+<div style="display:flex; gap:10px; align-items:flex-start; padding:8px 0;">
+  <div class="r-msg-avatar" style="width:30px;height:30px;border-radius:50%;background:var(--r-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">R</div>
+  <div class="r-typing">
+    <span class="r-typing-dot"></span>
+    <span class="r-typing-dot"></span>
+    <span class="r-typing-dot"></span>
+  </div>
+</div>
+
+<style>
+@keyframes r-typingBounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.35; }
+  30% { transform: translateY(-5px); opacity: 1; }
+}
+.r-typing {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 18px;
+  background: var(--r-surface-alt);
+  border-radius: 18px 18px 18px 4px;
+  border: 1px solid var(--r-border);
+}
+.r-typing-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--r-primary);
+  animation: r-typingBounce 1.3s ease-in-out infinite;
+}
+.r-typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.r-typing-dot:nth-child(3) { animation-delay: 0.3s; }
+</style>
+
+<div class="r-tool-panel">
+  <button class="r-tool-panel-trigger">
+    <span class="material-icons-round" style="font-size:16px; color:var(--r-primary);">auto_awesome</span>
+    <span class="r-tool-panel-label">Ce que Robert a fait</span>
+    <span class="material-icons-round r-tool-panel-chevron" style="font-size:18px;">expand_more</span>
+  </button>
+  <div class="r-tool-panel-body">
+    <div class="r-tool-panel-row">
+      <span class="r-tool-panel-key">Intention comprise :</span>
+      <span class="r-tool-panel-val"><strong>demande d'information géographique</strong></span>
+    </div>
+    <div class="r-tool-panel-row">
+      <span class="r-tool-panel-key">Outils mobilisés :</span>
+      <span class="r-tool-panel-val"><strong>Recherche web</strong></span>
+    </div>
+    <div class="r-tool-panel-row">
+      <span class="r-tool-panel-key">Résultats :</span>
+      <span class="r-tool-panel-val">5 résultats trouvés pour "capitale Japon"</span>
+    </div>
+    <hr style="border:0; height:1px; background:var(--r-border); margin:10px 0;">
+    <p class="r-tool-panel-why">
+      <em>Pourquoi :</em> L'utilisateur demande la capitale du Japon, une information géographique qui peut être obtenue via une recherche internet.
+    </p>
+  </div>
+</div>
+
+<style>
+.r-tool-panel {
+  background: var(--r-bg);
+  border: 1px solid var(--r-border);
+  border-radius: var(--r-radius-lg);
+  overflow: hidden;
+  max-width: 480px;
+  box-shadow: var(--r-shadow-sm);
+}
+.r-tool-panel-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--r-font);
+  transition: background var(--r-transition-fast);
+}
+.r-tool-panel-trigger:hover { background: var(--r-surface); }
+.r-tool-panel-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--r-primary);
+  flex: 1;
+  text-align: left;
+}
+.r-tool-panel-chevron {
+  color: var(--r-text-faint);
+  transition: transform var(--r-transition-spring);
+}
+.r-tool-panel.is-open .r-tool-panel-chevron {
+  transform: rotate(180deg);
+}
+.r-tool-panel-body {
+  padding: 0 16px 14px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.r-tool-panel-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+.r-tool-panel-key {
+  color: var(--r-text-muted);
+}
+.r-tool-panel-val {
+  color: var(--r-text-body);
+}
+.r-tool-panel-val strong { font-weight: 650; color: var(--r-text-heading); }
+.r-tool-panel-why {
+  font-size: 12.5px;
+  color: var(--r-text-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+.r-tool-panel-why em {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--r-text-body);
+}
+</style>
+
+
+<div class="r-msg-actions">
+  <button class="r-msg-action-btn" title="Copier">
+    <span class="material-icons-round">content_copy</span>
+  </button>
+  <button class="r-msg-action-btn" title="Écouter">
+    <span class="material-icons-round">volume_up</span>
+  </button>
+  <button class="r-msg-action-btn" title="Régénérer">
+    <span class="material-icons-round">refresh</span>
+  </button>
+  <button class="r-msg-action-btn" title="Outils utilisés">
+    <span class="material-icons-round">auto_awesome</span>
+  </button>
+  <button class="r-msg-action-btn" title="Exporter">
+    <span class="material-icons-round">description</span>
+  </button>
+  <div style="flex:1;"></div>
+  <button class="r-msg-action-btn" title="Utile">
+    <span class="material-icons-round">thumb_up</span>
+  </button>
+  <button class="r-msg-action-btn" title="Pas utile">
+    <span class="material-icons-round">thumb_down</span>
+  </button>
+  <button class="r-msg-action-btn" title="Vérifier">
+    <span class="material-icons-round">verified</span>
+  </button>
+</div>
+
+<style>
+.r-msg-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 0;
+}
+.r-msg-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  border-radius: var(--r-radius-sm);
+  color: var(--r-text-faint);
+  cursor: pointer;
+  transition: all var(--r-transition-fast);
+  font-family: var(--r-font);
+}
+.r-msg-action-btn .material-icons-round { font-size: 18px; }
+.r-msg-action-btn:hover {
+  background: var(--r-surface-alt);
+  color: var(--r-text-body);
+}
+.r-msg-action-btn:active {
+  background: var(--r-primary-light);
+  color: var(--r-primary);
+}
+.r-msg-action-btn.is-active {
+  color: var(--r-primary);
+  background: var(--r-primary-ghost);
+}
+</style>
+
+<div class="r-source-card">
+  <div class="r-source-favicon">
+    <span class="material-icons-round" style="font-size:16px;">language</span>
+  </div>
+  <div class="r-source-body">
+    <div class="r-source-domain">wikipedia.org</div>
+    <div class="r-source-title">Tokyo — Wikipédia</div>
+  </div>
+  <span class="r-source-index">1</span>
+</div>
+
+<style>
+.r-source-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--r-bg);
+  border: 1px solid var(--r-border);
+  border-radius: var(--r-radius-md);
+  cursor: pointer;
+  transition: all var(--r-transition);
+  max-width: 320px;
+}
+.r-source-card:hover {
+  border-color: var(--r-primary-border);
+  box-shadow: var(--r-shadow-primary);
+  transform: translateY(-1px);
+}
+.r-source-favicon {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-radius-xs);
+  background: var(--r-surface-alt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--r-text-muted);
+  flex-shrink: 0;
+}
+.r-source-body { flex: 1; min-width: 0; }
+.r-source-domain {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--r-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.r-source-title {
+  font-size: 13px;
+  font-weight: 580;
+  color: var(--r-text-heading);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+.r-source-index {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--r-primary-light);
+  color: var(--r-primary);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+</style>
+
+<div class="r-file-chip">
+  <span class="r-file-chip-icon">
+    <span class="material-icons-round">picture_as_pdf</span>
+  </span>
+  <div class="r-file-chip-info">
+    <span class="r-file-chip-name">rapport-2026.pdf</span>
+    <span class="r-file-chip-size">2.4 Mo</span>
+  </div>
+  <button class="r-file-chip-remove">
+    <span class="material-icons-round">close</span>
+  </button>
+</div>
+
+<style>
+.r-file-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--r-bg);
+  border: 1.5px solid var(--r-border);
+  border-radius: var(--r-radius-md);
+  transition: border-color var(--r-transition);
+  max-width: 280px;
+}
+.r-file-chip:hover { border-color: var(--r-primary-border); }
+.r-file-chip-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--r-radius-sm);
+  background: #fff1f2;
+  color: #e11d48;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.r-file-chip-icon .material-icons-round { font-size: 18px; }
+.r-file-chip-info { flex: 1; min-width: 0; }
+.r-file-chip-name {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--r-text-heading);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.r-file-chip-size {
+  font-size: 11px;
+  color: var(--r-text-faint);
+  font-weight: 500;
+}
+.r-file-chip-remove {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--r-text-faint);
+  cursor: pointer;
+  transition: all var(--r-transition-fast);
+  flex-shrink: 0;
+  font-family: var(--r-font);
+}
+.r-file-chip-remove .material-icons-round { font-size: 16px; }
+.r-file-chip-remove:hover {
+  background: var(--r-danger-light);
+  color: var(--r-danger);
+}
+</style>
+
+<div class="r-quick-replies">
+  <button class="r-quick-reply">
+    <span class="material-icons-round" style="font-size:16px;">lightbulb</span>
+    Explique-moi davantage
+  </button>
+  <button class="r-quick-reply">
+    <span class="material-icons-round" style="font-size:16px;">translate</span>
+    Traduis en anglais
+  </button>
+  <button class="r-quick-reply">
+    <span class="material-icons-round" style="font-size:16px;">summarize</span>
+    Résume en 3 points
+  </button>
+  <button class="r-quick-reply">
+    <span class="material-icons-round" style="font-size:16px;">code</span>
+    Donne un exemple de code
+  </button>
+</div>
+
+<style>
+.r-quick-replies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 0;
+}
+.r-quick-reply {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--r-bg);
+  border: 1.5px solid var(--r-border);
+  border-radius: var(--r-radius-full);
+  font-family: var(--r-font);
+  font-size: 13px;
+  font-weight: 550;
+  color: var(--r-text-body);
+  cursor: pointer;
+  transition: all var(--r-transition);
+  white-space: nowrap;
+}
+.r-quick-reply:hover {
+  border-color: var(--r-primary-border);
+  background: var(--r-primary-light);
+  color: var(--r-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--r-shadow-primary);
+}
+.r-quick-reply:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+</style>
+
+<div class="r-conv-item is-active">
+  <span class="material-icons-round r-conv-item-icon">chat_bubble</span>
+  <div class="r-conv-item-body">
+    <div class="r-conv-item-title">Capitale du Japon</div>
+    <div class="r-conv-item-preview">La capitale du Japon est Tokyo…</div>
+  </div>
+  <span class="r-conv-item-time">14:32</span>
+</div>
+
+<div class="r-conv-item">
+  <span class="material-icons-round r-conv-item-icon">chat_bubble_outline</span>
+  <div class="r-conv-item-body">
+    <div class="r-conv-item-title">Recette de cookies</div>
+    <div class="r-conv-item-preview">Voici une recette simple pour…</div>
+  </div>
+  <span class="r-conv-item-time">Hier</span>
+</div>
+
+<div class="r-conv-item">
+  <span class="material-icons-round r-conv-item-icon">chat_bubble_outline</span>
+  <div class="r-conv-item-body">
+    <div class="r-conv-item-title">Bug CSS flexbox</div>
+    <div class="r-conv-item-preview">Le problème vient de la propriété…</div>
+  </div>
+  <span class="r-conv-item-time">Lun.</span>
+</div>
+
+<style>
+.r-conv-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: var(--r-radius-md);
+  cursor: pointer;
+  transition: background var(--r-transition-fast);
+}
+.r-conv-item:hover { background: var(--r-surface); }
+.r-conv-item.is-active {
+  background: var(--r-primary-light);
+}
+.r-conv-item-icon {
+  font-size: 20px;
+  color: var(--r-text-faint);
+  flex-shrink: 0;
+}
+.r-conv-item.is-active .r-conv-item-icon { color: var(--r-primary); }
+.r-conv-item-body {
+  flex: 1;
+  min-width: 0;
+}
+.r-conv-item-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--r-text-heading);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.r-conv-item.is-active .r-conv-item-title { color: var(--r-primary); }
+.r-conv-item-preview {
+  font-size: 12px;
+  color: var(--r-text-faint);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+.r-conv-item-time {
+  font-size: 11px;
+  color: var(--r-text-faint);
+  font-weight: 500;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+</style>
+
+<div class="r-model-selector">
+  <button class="r-model-option is-selected">
+    <span class="r-model-dot" style="background:#3e5de7;"></span>
+    <div class="r-model-info">
+      <span class="r-model-name">GPT-4o</span>
+      <span class="r-model-desc">Rapide & intelligent</span>
+    </div>
+    <span class="material-icons-round r-model-check">check_circle</span>
+  </button>
+  <button class="r-model-option">
+    <span class="r-model-dot" style="background:#b45309;"></span>
+    <div class="r-model-info">
+      <span class="r-model-name">Claude 3.5 Sonnet</span>
+      <span class="r-model-desc">Analyse approfondie</span>
+    </div>
+  </button>
+  <button class="r-model-option">
+    <span class="r-model-dot" style="background:#0f766e;"></span>
+    <div class="r-model-info">
+      <span class="r-model-name">Mistral Large</span>
+      <span class="r-model-desc">Open source, multilingue</span>
+    </div>
+  </button>
+</div>
+
+<style>
+.r-model-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 340px;
+}
+.r-model-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--r-bg);
+  border: 1.5px solid var(--r-border);
+  border-radius: var(--r-radius-md);
+  cursor: pointer;
+  transition: all var(--r-transition);
+  text-align: left;
+  font-family: var(--r-font);
+}
+.r-model-option:hover {
+  border-color: var(--r-primary-border);
+  background: var(--r-surface);
+}
+.r-model-option.is-selected {
+  border-color: var(--r-primary);
+  background: var(--r-primary-light);
+  box-shadow: 0 0 0 2px rgba(62, 93, 231, 0.10);
+}
+.r-model-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.r-model-info { flex: 1; min-width: 0; }
+.r-model-name {
+  display: block;
+  font-size: 14px;
+  font-weight: 640;
+  color: var(--r-text-heading);
+}
+.r-model-desc {
+  display: block;
+  font-size: 12px;
+  color: var(--r-text-muted);
+  margin-top: 1px;
+}
+.r-model-check {
+  color: var(--r-primary);
+  font-size: 20px;
+  flex-shrink: 0;
+  display: none;
+}
+.r-model-option.is-selected .r-model-check { display: block; }
+</style>
+
+<div class="r-token-counter">
+  <div class="r-token-bar">
+    <div class="r-token-fill" style="width: 62%;"></div>
+  </div>
+  <div class="r-token-info">
+    <span class="r-token-used">78 400</span>
+    <span class="r-token-sep">/</span>
+    <span class="r-token-total">128 000 tokens</span>
+  </div>
+</div>
+
+<style>
+.r-token-counter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 280px;
+}
+.r-token-bar {
+  height: 6px;
+  background: var(--r-surface-alt);
+  border-radius: var(--r-radius-full);
+  overflow: hidden;
+}
+.r-token-fill {
+  height: 100%;
+  border-radius: var(--r-radius-full);
+  background: linear-gradient(90deg, var(--r-primary) 0%, #6366f1 100%);
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.r-token-info {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  font-size: 12px;
+}
+.r-token-used {
+  font-weight: 700;
+  color: var(--r-text-heading);
+  font-variant-numeric: tabular-nums;
+}
+.r-token-sep { color: var(--r-text-faint); }
+.r-token-total {
+  color: var(--r-text-muted);
+  font-weight: 500;
+}
+</style>
+
+<div class="r-code-header">
+  <span class="r-code-lang">javascript</span>
+  <button class="r-code-copy" onclick="this.querySelector('.label').textContent='Copié !'; this.classList.add('is-copied'); setTimeout(()=>{this.querySelector('.label').textContent='Copier'; this.classList.remove('is-copied');}, 1800);">
+    <span class="material-icons-round" style="font-size:15px;">content_copy</span>
+    <span class="label">Copier</span>
+  </button>
+</div>
+<pre class="r-code-block"><code>const capitale = "Tokyo";
+console.log(`La capitale du Japon est ${capitale}`);</code></pre>
+
+<style>
+.r-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: #e8ecf0;
+  border: 1px solid #d0d7de;
+  border-bottom: none;
+  border-radius: var(--r-radius-md) var(--r-radius-md) 0 0;
+}
+.r-code-lang {
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--r-text-muted);
+  text-transform: lowercase;
+  font-family: var(--r-mono);
+}
+.r-code-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  font-family: var(--r-font);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--r-text-muted);
+  background: var(--r-bg);
+  border: 1px solid var(--r-border);
+  border-radius: var(--r-radius-xs);
+  cursor: pointer;
+  transition: all var(--r-transition-fast);
+}
+.r-code-copy:hover {
+  color: var(--r-primary);
+  border-color: var(--r-primary-border);
+  background: var(--r-primary-light);
+}
+.r-code-copy.is-copied {
+  color: var(--r-success);
+  border-color: var(--r-success-border);
+  background: var(--r-success-light);
+}
+.r-code-block {
+  background: #f6f8fa;
+  color: #24292f;
+  padding: 16px;
+  border-radius: 0 0 var(--r-radius-md) var(--r-radius-md);
+  overflow-x: auto;
+  font-family: var(--r-mono);
+  font-size: 14px;
+  line-height: 1.55;
+  border: 1px solid #d0d7de;
+  border-top: none;
+  margin: 0;
+}
+.r-code-block code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+</style>
+
+<div class="r-img-preview">
+  <div class="r-img-preview-thumb">
+    <span class="material-icons-round" style="font-size:32px; color:var(--r-text-faint);">image</span>
+  </div>
+  <div class="r-img-preview-info">
+    <span class="r-img-preview-name">photo-vacances.jpg</span>
+    <span class="r-img-preview-meta">1920 × 1080 · 1.8 Mo</span>
+  </div>
+  <div class="r-img-preview-actions">
+    <button class="r-img-preview-btn" title="Voir">
+      <span class="material-icons-round">visibility</span>
+    </button>
+    <button class="r-img-preview-btn r-img-preview-btn-danger" title="Retirer">
+      <span class="material-icons-round">close</span>
+    </button>
+  </div>
+</div>
+
+<style>
+.r-img-preview {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  background: var(--r-bg);
+  border: 1.5px solid var(--r-border);
+  border-radius: var(--r-radius-md);
+  max-width: 360px;
+  transition: border-color var(--r-transition);
+}
+.r-img-preview:hover { border-color: var(--r-primary-border); }
+.r-img-preview-thumb {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--r-radius-sm);
+  background: var(--r-surface-alt);
+  border: 1px solid var(--r-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.r-img-preview-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.r-img-preview-info { flex: 1; min-width: 0; }
+.r-img-preview-name {
+  display: block;
+  font-size: 13px;
+  font-weight: 620;
+  color: var(--r-text-heading);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.r-img-preview-meta {
+  display: block;
+  font-size: 11.5px;
+  color: var(--r-text-faint);
+  margin-top: 2px;
+}
+.r-img-preview-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.r-img-preview-btn {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  border-radius: var(--r-radius-xs);
+  color: var(--r-text-faint);
+  cursor: pointer;
+  transition: all var(--r-transition-fast);
+  font-family: var(--r-font);
+}
+.r-img-preview-btn .material-icons-round { font-size: 18px; }
+.r-img-preview-btn:hover {
+  background: var(--r-surface-alt);
+  color: var(--r-text-body);
+}
+.r-img-preview-btn-danger:hover {
+  background: var(--r-danger-light);
+  color: var(--r-danger);
+}
+</style>
+
+<div class="r-time-sep">
+  <span class="r-time-sep-label">Aujourd'hui, 14:32</span>
+</div>
+
+<style>
+.r-time-sep {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+}
+.r-time-sep::before,
+.r-time-sep::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--r-border);
+}
+.r-time-sep-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--r-text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+</style>
+
+<div class="r-reasoning">
+  <button class="r-reasoning-trigger">
+    <span class="r-reasoning-icon">
+      <span class="material-icons-round" style="font-size:16px;">psychology</span>
+    </span>
+    <span class="r-reasoning-label">Raisonnement</span>
+    <span class="r-reasoning-duration">3.2s</span>
+    <span class="material-icons-round r-reasoning-chevron" style="font-size:18px;">expand_more</span>
+  </button>
+  <div class="r-reasoning-body">
+    <p>L'utilisateur pose une question factuelle. Je dois identifier la capitale officielle du Japon. Tokyo est la capitale depuis 1868 quand l'empereur s'y est installé. Je vais formuler une réponse concise avec le nom en gras.</p>
+  </div>
+</div>
+
+<style>
+.r-reasoning {
+  background: var(--r-surface);
+  border: 1px solid var(--r-border);
+  border-radius: var(--r-radius-md);
+  overflow: hidden;
+  max-width: 600px;
+}
+.r-reasoning-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--r-font);
+  transition: background var(--r-transition-fast);
+}
+.r-reasoning-trigger:hover { background: var(--r-surface-alt); }
+.r-reasoning-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #f3e8ff;
+  color: #7c3aed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.r-reasoning-label {
+  font-size: 13px;
+  font-weight: 620;
+  color: var(--r-text-body);
+  flex: 1;
+  text-align: left;
+}
+.r-reasoning-duration {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--r-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.r-reasoning-chevron {
+  color: var(--r-text-faint);
+  transition: transform var(--r-transition-spring);
+}
+.r-reasoning.is-open .r-reasoning-chevron {
+  transform: rotate(180deg);
+}
+.r-reasoning-body {
+  padding: 0 14px 14px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--r-text-muted);
+  font-style: italic;
+  border-top: 1px solid var(--r-border);
+  margin: 0 14px;
+  padding: 12px 0 14px;
+}
+.r-reasoning-body p { margin: 0; }
+</style>
+
+<div class="r-error-msg">
+  <div class="r-error-msg-icon">
+    <span class="material-icons-round">error_outline</span>
+  </div>
+  <div class="r-error-msg-body">
+    <div class="r-error-msg-title">Impossible de générer la réponse</div>
+    <div class="r-error-msg-desc">Le serveur a rencontré une erreur. Veuillez réessayer ou vérifier votre connexion.</div>
+  </div>
+  <button class="r-error-msg-retry">
+    <span class="material-icons-round" style="font-size:18px;">refresh</span>
+    Réessayer
+  </button>
+</div>
+
+<style>
+.r-error-msg {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 20px;
+  background: var(--r-danger-light);
+  border: 1px solid var(--r-danger-border);
+  border-radius: var(--r-radius-lg);
+  max-width: 560px;
+}
+.r-error-msg-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(225, 29, 72, 0.12);
+  color: var(--r-danger);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.r-error-msg-icon .material-icons-round { font-size: 20px; }
+.r-error-msg-body { flex: 1; }
+.r-error-msg-title {
+  font-size: 14px;
+  font-weight: 660;
+  color: var(--r-danger);
+  margin-bottom: 4px;
+}
+.r-error-msg-desc {
+  font-size: 13px;
+  color: #9f1239;
+  line-height: 1.5;
+  opacity: 0.85;
+}
+.r-error-msg-retry {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--r-bg);
+  color: var(--r-danger);
+  border: 1.5px solid var(--r-danger-border);
+  border-radius: var(--r-radius-sm);
+  font-family: var(--r-font);
+  font-size: 13px;
+  font-weight: 620;
+  cursor: pointer;
+  transition: all var(--r-transition);
+  white-space: nowrap;
+  flex-shrink: 0;
+  align-self: center;
+}
+.r-error-msg-retry:hover {
+  background: var(--r-danger);
+  color: #fff;
+  border-color: var(--r-danger);
+}
+</style>
+
+<div class="r-welcome">
+  <div class="r-welcome-logo">
+    <span class="material-icons-round" style="font-size:36px; color:var(--r-primary);">auto_awesome</span>
+  </div>
+  <h1 class="r-welcome-title">Bonjour, comment puis-je vous aider ?</h1>
+  <p class="r-welcome-desc">Je suis Robert, votre assistant IA. Posez-moi une question, demandez une analyse ou explorez les suggestions ci-dessous.</p>
+  <div class="r-welcome-cards">
+    <button class="r-welcome-card">
+      <span class="material-icons-round" style="font-size:22px; color:#6366f1;">edit_note</span>
+      <span class="r-welcome-card-text">Aide-moi à rédiger un email professionnel</span>
+    </button>
+    <button class="r-welcome-card">
+      <span class="material-icons-round" style="font-size:22px; color:#0f766e;">code</span>
+      <span class="r-welcome-card-text">Explique-moi les closures en JavaScript</span>
+    </button>
+    <button class="r-welcome-card">
+      <span class="material-icons-round" style="font-size:22px; color:#b45309;">analytics</span>
+      <span class="r-welcome-card-text">Analyse les tendances du marché tech 2026</span>
+    </button>
+    <button class="r-welcome-card">
+      <span class="material-icons-round" style="font-size:22px; color:#e11d48;">restaurant</span>
+      <span class="r-welcome-card-text">Propose un menu végétarien pour la semaine</span>
+    </button>
+  </div>
+</div>
+
+<style>
+.r-welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 48px 24px;
+  max-width: 640px;
+  margin: 0 auto;
+  animation: emptyStateFadeIn 0.6s ease-out;
+}
+@keyframes emptyStateFadeIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.r-welcome-logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--r-primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  box-shadow: 0 0 0 8px rgba(62, 93, 231, 0.06);
+}
+.r-welcome-title {
+  font-size: 1.6rem;
+  font-weight: 760;
+  color: var(--r-text-heading);
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+  line-height: 1.25;
+}
+.r-welcome-desc {
+  font-size: 15px;
+  color: var(--r-text-muted);
+  line-height: 1.6;
+  max-width: 480px;
+  margin-bottom: 32px;
+}
+.r-welcome-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+}
+.r-welcome-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: var(--r-bg);
+  border: 1.5px solid var(--r-border);
+  border-radius: var(--r-radius-lg);
+  cursor: pointer;
+  transition: all var(--r-transition);
+  text-align: left;
+  font-family: var(--r-font);
+}
+.r-welcome-card:hover {
+  border-color: var(--r-primary-border);
+  box-shadow: var(--r-shadow-primary);
+  transform: translateY(-2px);
+}
+.r-welcome-card-text {
+  font-size: 13.5px;
+  font-weight: 550;
+  color: var(--r-text-body);
+  line-height: 1.45;
+}
+</style>
+
+<div class="r-sysprompt">
+  <div class="r-sysprompt-header">
+    <span class="material-icons-round" style="font-size:18px; color:var(--r-primary);">tune</span>
+    <span class="r-sysprompt-title">Prompt système</span>
+    <button class="r-sysprompt-edit">
+      <span class="material-icons-round" style="font-size:15px;">edit</span>
+      Modifier
+    </button>
+  </div>
+  <div class="r-sysprompt-body">
+    <p>Tu es Robert, un assistant IA en français. Tu es précis, amical et tu structures tes réponses avec des titres et des listes quand c'est pertinent. Tu cites toujours tes sources.</p>
+  </div>
+  <div class="r-sysprompt-footer">
+    <span class="r-sysprompt-meta">
+      <span class="material-icons-round" style="font-size:14px;">token</span>
+      148 tokens
+    </span>
+    <span class="r-sysprompt-meta">
+      <span class="material-icons-round" style="font-size:14px;">schedule</span>
+      Modifié il y a 2h
+    </span>
+  </div>
+</div>
+
+<style>
+.r-sysprompt {
+  background: var(--r-bg);
+  border: 1.5px solid var(--r-border);
+  border-radius: var(--r-radius-lg);
+  overflow: hidden;
+  max-width: 520px;
+}
+.r-sysprompt-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--r-border);
+  background: var(--r-surface);
+}
+.r-sysprompt-title {
+  font-size: 14px;
+  font-weight: 660;
+  color: var(--r-text-heading);
+  flex: 1;
+}
+.r-sysprompt-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  font-family: var(--r-font);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--r-primary);
+  background: var(--r-primary-light);
+  border: 1px solid var(--r-primary-border);
+  border-radius: var(--r-radius-xs);
+  cursor: pointer;
+  transition: all var(--r-transition-fast);
+}
+.r-sysprompt-edit:hover {
+  background: var(--r-primary);
+  color: #fff;
+  border-color: var(--r-primary);
+}
+.r-sysprompt-body {
+  padding: 16px 18px;
+  font-size: 13.5px;
+  color: var(--r-text-body);
+  line-height: 1.65;
+  font-style: italic;
+}
+.r-sysprompt-body p { margin: 0; }
+.r-sysprompt-footer {
+  display: flex;
+  gap: 16px;
+  padding: 10px 18px;
+  border-top: 1px solid var(--r-border);
+  background: var(--r-surface);
+}
+.r-sysprompt-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 550;
+  color: var(--r-text-faint);
+}
+</style>
+
+<div class="r-export-panel">
+  <div class="r-export-header">
+    <span class="material-icons-round" style="font-size:20px; color:var(--r-primary);">download</span>
+    <span class="r-export-title">Exporter la conversation</span>
+  </div>
+  <div class="r-export-options">
+    <label class="r-export-option">
+      <input type="radio" name="export" checked>
+      <span class="r-export-option-radio"></span>
+      <span class="r-export-option-icon" style="background:#fff1f2; color:#e11d48;">
+        <span class="material-icons-round" style="font-size:18px;">picture_as_pdf</span>
+      </span>
+      <div class="r-export-option-info">
+        <span class="r-export-option-name">PDF</span>
+        <span class="r-export-option-desc">Mise en page formatée</span>
+      </div>
+    </label>
+    <label class="r-export-option">
+      <input type="radio" name="export">
+      <span class="r-export-option-radio"></span>
+      <span class="r-export-option-icon" style="background:var(--r-primary-light); color:var(--r-primary);">
+        <span class="material-icons-round" style="font-size:18px;">code</span>
+      </span>
+      <div class="r-export-option-info">
+        <span class="r-export-option-name">Markdown</span>
+        <span class="r-export-option-desc">Texte brut structuré</span>
+      </div>
+    </label>
+    <label class="r-export-option">
+      <input type="radio" name="export">
+      <span class="r-export-option-radio"></span>
+      <span class="r-export-option-icon" style="background:var(--r-warning-light); color:var(--r-warning);">
+        <span class="material-icons-round" style="font-size:18px;">data_object</span>
+      </span>
+      <div class="r-export-option-info">
+        <span class="r-export-option-name">JSON</span>
+        <span class="r-export-option-desc">Données structurées brutes</span>
+      </div>
+    </label>
+  </div>
+  <div class="r-export-footer">
+    <button class="r-export-cancel" style="padding:9px 18px; font-size:14px; font-weight:600; color:var(--r-text-muted); background:none; border:1.5px solid var(--r-border); border-radius:var(--r-radius-sm); cursor:pointer; font-family:var(--r-font); transition: all 0.2s ease;">Annuler</button>
+    <button class="r-export-submit" style="padding:9px 18px; font-size:14px; font-weight:600; color:#fff; background:var(--r-primary); border:1.5px solid var(--r-primary); border-radius:var(--r-radius-sm); cursor:pointer; font-family:var(--r-font); display:inline-flex; align-items:center; gap:6px; transition: all 0.2s ease;">
+      <span class="material-icons-round" style="font-size:18px;">download</span>
+      Télécharger
+    </button>
+  </div>
+</div>
+
+<style>
+.r-export-panel {
+  background: var(--r-bg);
+  border: 1.5px solid var(--r-border);
+  border-radius: var(--r-radius-lg);
+  overflow: hidden;
+  max-width: 420px;
+  box-shadow: var(--r-shadow-md);
+}
+.r-export-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--r-border);
+}
+.r-export-title {
+  font-size: 15px;
+  font-weight: 680;
+  color: var(--r-text-heading);
+}
+.r-export-options {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.r-export-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--r-border);
+  border-radius: var(--r-radius-md);
+  cursor: pointer;
+  transition: all var(--r-transition);
+}
+.r-export-option:hover { border-color: var(--r-primary-border); background: var(--r-surface); }
+.r-export-option input { display: none; }
+.r-export-option-radio {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--r-border-strong);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--r-transition);
+}
+.r-export-option-radio::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--r-primary);
+  transform: scale(0);
+  transition: transform var(--r-transition-spring);
+}
+.r-export-option input:checked ~ .r-export-option-radio {
+  border-color: var(--r-primary);
+}
+.r-export-option input:checked ~ .r-export-option-radio::after {
+  transform: scale(1);
+}
+.r-export-option input:checked ~ .r-export-option-icon,
+.r-export-option input:checked ~ .r-export-option-info .r-export-option-name {
+  /* inherited highlight handled via border */
+}
+.r-export-option-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.r-export-option-info { flex: 1; min-width: 0; }
+.r-export-option-name {
+  display: block;
+  font-size: 14px;
+  font-weight: 630;
+  color: var(--r-text-heading);
+}
+.r-export-option-desc {
+  display: block;
+  font-size: 12px;
+  color: var(--r-text-muted);
+  margin-top: 1px;
+}
+.r-export-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--r-border);
+}
+</style>
+
+<div class="r-export-panel">
+  <div class="r-export-header">
+    <span class="material-icons-round" style="font-size:20px; color:var(--r-primary);">download</span>
+    <span class="r-export-title">Exporter la conversation</span>
+  </div>
+  <div class="r-export-options">
+    <label class="r-export-option">
+      <input type="radio" name="export" checked>
+      <span class="r-export-option-radio"></span>
+      <span class="r-export-option-icon" style="background:#fff1f2; color:#e11d48;">
+        <span class="material-icons-round" style="font-size:18px;">picture_as_pdf</span>
+      </span>
+      <div class="r-export-option-info">
+        <span class="r-export-option-name">PDF</span>
+        <span class="r-export-option-desc">Mise en page formatée</span>
+      </div>
+    </label>
+    <label class="r-export-option">
+      <input type="radio" name="export">
+      <span class="r-export-option-radio"></span>
+      <span class="r-export-option-icon" style="background:var(--r-primary-light); color:var(--r-primary);">
+        <span class="material-icons-round" style="font-size:18px;">code</span>
+      </span>
+      <div class="r-export-option-info">
+        <span class="r-export-option-name">Markdown</span>
+        <span class="r-export-option-desc">Texte brut structuré</span>
+      </div>
+    </label>
+    <label class="r-export-option">
+      <input type="radio" name="export">
+      <span class="r-export-option-radio"></span>
+      <span class="r-export-option-icon" style="background:var(--r-warning-light); color:var(--r-warning);">
+        <span class="material-icons-round" style="font-size:18px;">data_object</span>
+      </span>
+      <div class="r-export-option-info">
+        <span class="r-export-option-name">JSON</span>
+        <span class="r-export-option-desc">Données structurées brutes</span>
+      </div>
+    </label>
+  </div>
+  <div class="r-export-footer">
+    <button class="r-export-cancel" style="padding:9px 18px; font-size:14px; font-weight:600; color:var(--r-text-muted); background:none; border:1.5px solid var(--r-border); border-radius:var(--r-radius-sm); cursor:pointer; font-family:var(--r-font); transition: all 0.2s ease;">Annuler</button>
+    <button class="r-export-submit" style="padding:9px 18px; font-size:14px; font-weight:600; color:#fff; background:var(--r-primary); border:1.5px solid var(--r-primary); border-radius:var(--r-radius-sm); cursor:pointer; font-family:var(--r-font); display:inline-flex; align-items:center; gap:6px; transition: all 0.2s ease;">
+      <span class="material-icons-round" style="font-size:18px;">download</span>
+      Télécharger
+    </button>
+  </div>
+</div>
+
+<style>
+.r-export-panel {
+  background: var(--r-bg);
+  border: 1.5px solid var(--r-border);
+  border-radius: var(--r-radius-lg);
+  overflow: hidden;
+  max-width: 420px;
+  box-shadow: var(--r-shadow-md);
+}
+.r-export-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--r-border);
+}
+.r-export-title {
+  font-size: 15px;
+  font-weight: 680;
+  color: var(--r-text-heading);
+}
+.r-export-options {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.r-export-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--r-border);
+  border-radius: var(--r-radius-md);
+  cursor: pointer;
+  transition: all var(--r-transition);
+}
+.r-export-option:hover { border-color: var(--r-primary-border); background: var(--r-surface); }
+.r-export-option input { display: none; }
+.r-export-option-radio {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--r-border-strong);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--r-transition);
+}
+.r-export-option-radio::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--r-primary);
+  transform: scale(0);
+  transition: transform var(--r-transition-spring);
+}
+.r-export-option input:checked ~ .r-export-option-radio {
+  border-color: var(--r-primary);
+}
+.r-export-option input:checked ~ .r-export-option-radio::after {
+  transform: scale(1);
+}
+.r-export-option input:checked ~ .r-export-option-icon,
+.r-export-option input:checked ~ .r-export-option-info .r-export-option-name {
+  /* inherited highlight handled via border */
+}
+.r-export-option-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.r-export-option-info { flex: 1; min-width: 0; }
+.r-export-option-name {
+  display: block;
+  font-size: 14px;
+  font-weight: 630;
+  color: var(--r-text-heading);
+}
+.r-export-option-desc {
+  display: block;
+  font-size: 12px;
+  color: var(--r-text-muted);
+  margin-top: 1px;
+}
+.r-export-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--r-border);
+}
+</style>
+
+<button class="r-launcher" id="rLauncher" onclick="this.classList.toggle('is-open')">
+  <span class="r-launcher-icon r-launcher-icon--chat">
+    <span class="material-icons-round">chat</span>
+  </span>
+  <span class="r-launcher-icon r-launcher-icon--close">
+    <span class="material-icons-round">close</span>
+  </span>
+  <span class="r-launcher-badge">3</span>
+</button>
+
+<style>
+.r-launcher {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 99999;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  background: var(--r-primary);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(62, 93, 231, 0.35), 0 2px 6px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--r-transition-spring);
+  outline: none;
+}
+.r-launcher:hover {
+  background: var(--r-primary-hover);
+  transform: scale(1.07);
+  box-shadow: 0 6px 20px rgba(62, 93, 231, 0.4), 0 3px 8px rgba(0,0,0,0.12);
+}
+.r-launcher:active {
+  transform: scale(0.96);
+  background: var(--r-primary-active);
+}
+
+/* Icons swap */
+.r-launcher-icon {
+  position: absolute;
+  transition: all var(--r-transition-spring);
+}
+.r-launcher-icon .material-icons-round { font-size: 28px; }
+
+.r-launcher-icon--chat {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+.r-launcher-icon--close {
+  opacity: 0;
+  transform: scale(0.3) rotate(-90deg);
+}
+.r-launcher.is-open .r-launcher-icon--chat {
+  opacity: 0;
+  transform: scale(0.3) rotate(90deg);
+}
+.r-launcher.is-open .r-launcher-icon--close {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+/* Badge */
+.r-launcher-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  background: var(--r-danger);
+  color: #fff;
+  font-family: var(--r-font);
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: var(--r-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(225, 29, 72, 0.3);
+  transition: all var(--r-transition-spring);
+  pointer-events: none;
+}
+.r-launcher.is-open .r-launcher-badge {
+  opacity: 0;
+  transform: scale(0.4);
+}
+
+/* Pulse ring */
+.r-launcher::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid var(--r-primary);
+  opacity: 0;
+  animation: r-launcherPulse 3s ease-out infinite;
+}
+@keyframes r-launcherPulse {
+  0%   { transform: scale(1); opacity: 0.4; }
+  70%  { transform: scale(1.35); opacity: 0; }
+  100% { opacity: 0; }
+}
+</style>
+
+<div class="r-widget is-open">
+  <div class="r-widget-inner">
+    <!-- Header, messages, composer go here -->
+    <div style="padding:40px; text-align:center; color:var(--r-text-muted); font-size:14px;">
+      Contenu du widget ici
+    </div>
+  </div>
+</div>
+
+<style>
+.r-widget {
+  position: fixed;
+  bottom: 96px;
+  right: 24px;
+  z-index: 99998;
+  width: 420px;
+  height: 640px;
+  max-height: calc(100vh - 120px);
+  max-width: calc(100vw - 32px);
+  border-radius: var(--r-radius-xl);
+  overflow: hidden;
+  background: var(--r-bg);
+  border: 1px solid var(--r-border);
+  box-shadow:
+    0 20px 60px -12px rgba(0, 0, 0, 0.15),
+    0 10px 25px -5px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+
+  /* Animation */
+  opacity: 0;
+  transform: translateY(16px) scale(0.96);
+  transform-origin: bottom right;
+  pointer-events: none;
+  transition: all var(--r-transition-spring);
+}
+.r-widget.is-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.r-widget-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+/* Fullscreen mode */
+.r-widget.is-fullscreen {
+  bottom: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  max-height: 100vh;
+  max-width: 100vw;
+  border-radius: 0;
+  border: none;
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  .r-widget {
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    max-width: 100vw;
+    border-radius: 0;
+    border: none;
+    transform-origin: bottom center;
+  }
+}
+</style>
+
+<div class="r-header">
+  <div class="r-header-left">
+    <div class="r-header-avatar">
+      <span class="r-header-avatar-letter">R</span>
+      <span class="r-header-status-dot"></span>
+    </div>
+    <div class="r-header-info">
+      <div class="r-header-name">Robert</div>
+      <div class="r-header-status">En ligne · GPT-4o</div>
+    </div>
+  </div>
+  <div class="r-header-actions">
+    <button class="r-header-btn" title="Nouvelle conversation">
+      <span class="material-icons-round">add_comment</span>
+    </button>
+    <button class="r-header-btn" title="Paramètres">
+      <span class="material-icons-round">settings</span>
+    </button>
+    <button class="r-header-btn" title="Plein écran">
+      <span class="material-icons-round">open_in_full</span>
+    </button>
+    <button class="r-header-btn r-header-btn--close" title="Fermer">
+      <span class="material-icons-round">close</span>
+    </button>
+  </div>
+</div>
+
+<style>
+.r-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--r-bg);
+  border-bottom: 1px solid var(--r-border);
+  flex-shrink: 0;
+  gap: 12px;
+  min-height: 60px;
+}
+.r-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+.r-header-avatar {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--r-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.r-header-avatar-letter {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 750;
+}
+.r-header-status-dot {
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #22c55e;
+  border: 2px solid var(--r-bg);
+}
+.r-header-info {
+  flex: 1;
+  min-width: 0;
+}
+.r-header-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--r-text-heading);
+  letter-spacing: -0.01em;
+}
+.r-header-status {
+  font-size: 12px;
+  color: var(--r-text-muted);
+  font-weight: 500;
+  margin-top: 1px;
+}
+.r-header-actions {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.r-header-btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: none;
+  border-radius: var(--r-radius-sm);
+  color: var(--r-text-faint);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--r-transition-fast);
+  font-family: var(--r-font);
+}
+.r-header-btn .material-icons-round { font-size: 20px; }
+.r-header-btn:hover {
+  background: var(--r-surface-alt);
+  color: var(--r-text-body);
+}
+.r-header-btn:active {
+  background: var(--r-primary-light);
+  color: var(--r-primary);
+}
+.r-header-btn--close:hover {
+  background: var(--r-danger-light);
+  color: var(--r-danger);
+}
+</style>
+
+<div class="r-messages" id="rMessages">
+  <!-- Exemples de contenu pour la démo -->
+  <div class="r-messages-top-spacer"></div>
+
+  <div class="r-msg-row r-msg-row--assistant">
+    <div style="width:30px;height:30px;border-radius:50%;background:var(--r-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">R</div>
+    <div style="font-size:14.5px; line-height:1.65; color:var(--r-text-body); max-width:76ch;">
+      Bonjour ! Comment puis-je vous aider aujourd'hui ?
+    </div>
+  </div>
+
+  <div class="r-msg-row r-msg-row--user">
+    <div style="max-width:72%; padding:12px 18px; background:var(--r-primary); color:#fff; border-radius:18px 18px 4px 18px; font-size:14.5px; line-height:1.6; font-weight:450;">
+      Salut Robert, explique-moi le concept de closure en JS.
+    </div>
+  </div>
+
+  <div class="r-msg-row r-msg-row--assistant">
+    <div style="width:30px;height:30px;border-radius:50%;background:var(--r-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">R</div>
+    <div style="font-size:14.5px; line-height:1.65; color:var(--r-text-body); max-width:76ch;">
+      Une closure (ou fermeture) est une fonction qui « se souvient » de l'environnement dans lequel elle a été créée, même après que cet environnement ait cessé d'exister dans la pile d'exécution.
+    </div>
+  </div>
+
+  <div class="r-messages-bottom-anchor" id="rMessagesAnchor"></div>
+</div>
+
+<style>
+.r-messages {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 16px;
+  scroll-behavior: smooth;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  /* Scrollbar styling */
+  scrollbar-width: thin;
+  scrollbar-color: var(--r-border) transparent;
+}
+.r-messages::-webkit-scrollbar {
+  width: 5px;
+}
+.r-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+.r-messages::-webkit-scrollbar-thumb {
+  background: var(--r-border);
+  border-radius: var(--r-radius-full);
+}
+.r-messages::-webkit-scrollbar-thumb:hover {
+  background: var(--r-border-strong);
+}
+
+.r-messages-top-spacer {
+  flex-shrink: 0;
+  height: 16px;
+}
+.r-messages-bottom-anchor {
+  flex-shrink: 0;
+  height: 8px;
+}
+
+/* Message rows */
+.r-msg-row {
+  display: flex;
+  gap: 10px;
+  padding: 6px 0;
+  align-items: flex-start;
+  animation: r-msgSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes r-msgSlideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.r-msg-row--user {
+  justify-content: flex-end;
+}
+.r-msg-row--assistant {
+  justify-content: flex-start;
+}
+
+/* Mask gradient at top when scrolled */
+.r-messages::before {
+  content: '';
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: linear-gradient(to bottom, var(--r-bg) 0%, transparent 100%);
+  flex-shrink: 0;
+  pointer-events: none;
+  z-index: 1;
+  margin-bottom: -20px;
+}
+</style>
+
+<div class="r-composer">
+  <div class="r-composer-attachments">
+    <!-- Attachment chips go here when files are added -->
+  </div>
+  <div class="r-composer-input-row">
+    <button class="r-composer-btn" title="Ajouter un fichier">
+      <span class="material-icons-round">attach_file</span>
+    </button>
+    <div class="r-composer-input-wrap">
+      <textarea
+        class="r-composer-textarea"
+        placeholder="Écrivez votre message…"
+        rows="1"
+        oninput="this.style.height='auto'; this.style.height=Math.min(this.scrollHeight,140)+'px';"
+      ></textarea>
+    </div>
+    <button class="r-composer-btn" title="Commandes">
+      <span class="material-icons-round">data_object</span>
+    </button>
+    <button class="r-composer-btn" title="Micro">
+      <span class="material-icons-round">mic</span>
+    </button>
+    <button class="r-composer-send" title="Envoyer">
+      <span class="material-icons-round">arrow_upward</span>
+    </button>
+  </div>
+  <div class="r-composer-footer">
+    <span class="r-composer-hint">Entrée pour envoyer · Shift+Entrée pour sauter une ligne</span>
+  </div>
+</div>
+
+<style>
+.r-composer {
+  flex-shrink: 0;
+  border-top: 1px solid var(--r-border);
+  background: var(--r-bg);
+  padding: 10px 12px 8px;
+}
+.r-composer-attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-bottom: 0;
+}
+.r-composer-attachments:empty { display: none; }
+.r-composer-attachments:not(:empty) { padding-bottom: 10px; }
+
+.r-composer-input-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  background: var(--r-surface);
+  border: 1.5px solid var(--r-border);
+  border-radius: var(--r-radius-lg);
+  padding: 6px 6px 6px 4px;
+  transition: border-color var(--r-transition), box-shadow var(--r-transition);
+}
+.r-composer-input-row:focus-within {
+  border-color: var(--r-primary);
+  box-shadow: 0 0 0 3px rgba(62, 93, 231, 0.08);
+  background: var(--r-bg);
+}
+
+.r-composer-input-wrap {
+  flex: 1;
+  min-width: 0;
+}
+.r-composer-textarea {
+  width: 100%;
+  border: none;
+  background: none;
+  outline: none;
+  resize: none;
+  font-family: var(--r-font);
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--r-text);
+  padding: 6px 4px;
+  max-height: 140px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--r-border) transparent;
+}
+.r-composer-textarea::placeholder {
+  color: var(--r-text-faint);
+  font-weight: 450;
+}
+
+.r-composer-btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: none;
+  border-radius: var(--r-radius-sm);
+  color: var(--r-text-faint);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--r-transition-fast);
+  font-family: var(--r-font);
+}
+.r-composer-btn .material-icons-round { font-size: 20px; }
+.r-composer-btn:hover {
+  background: var(--r-surface-alt);
+  color: var(--r-text-body);
+}
+
+.r-composer-send {
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: var(--r-primary);
+  color: #fff;
+  border-radius: var(--r-radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--r-transition);
+  font-family: var(--r-font);
+}
+.r-composer-send .material-icons-round { font-size: 20px; }
+.r-composer-send:hover {
+  background: var(--r-primary-hover);
+  box-shadow: var(--r-shadow-primary);
+}
+.r-composer-send:active {
+  background: var(--r-primary-active);
+  transform: scale(0.93);
+}
+/* Disabled state */
+.r-composer-send:disabled {
+  background: var(--r-surface-alt);
+  color: var(--r-text-faint);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.r-composer-footer {
+  padding: 6px 4px 0;
+}
+.r-composer-hint {
+  font-size: 11px;
+  color: var(--r-text-faint);
+  font-weight: 500;
+}
+</style>
+
+<button class="r-scroll-bottom is-visible" onclick="document.getElementById('rMessagesAnchor')?.scrollIntoView({behavior:'smooth'});">
+  <span class="material-icons-round">keyboard_arrow_down</span>
+  <span class="r-scroll-bottom-badge">2</span>
+</button>
+
+<style>
+.r-scroll-bottom {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  z-index: 10;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid var(--r-border);
+  background: var(--r-bg);
+  color: var(--r-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--r-shadow-md);
+  opacity: 0;
+  pointer-events: none;
+  transition: all var(--r-transition-spring);
+  font-family: var(--r-font);
+}
+.r-scroll-bottom .material-icons-round { font-size: 22px; }
+.r-scroll-bottom.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+.r-scroll-bottom:hover {
+  background: var(--r-primary);
+  color: #fff;
+  border-color: var(--r-primary);
+  box-shadow: var(--r-shadow-primary);
+}
+.r-scroll-bottom:active {
+  transform: translateX(-50%) scale(0.92);
+}
+
+.r-scroll-bottom-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: var(--r-radius-full);
+  background: var(--r-danger);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(225, 29, 72, 0.3);
+}
+.r-scroll-bottom-badge:empty { display: none; }
+</style>
+
+<div class="r-skeleton-wrap">
+  <!-- Assistant skeleton -->
+  <div class="r-skeleton-row r-skeleton-row--assistant">
+    <div class="r-skeleton-avatar r-skeleton-pulse"></div>
+    <div class="r-skeleton-content">
+      <div class="r-skeleton-line r-skeleton-pulse" style="width: 85%;"></div>
+      <div class="r-skeleton-line r-skeleton-pulse" style="width: 60%;"></div>
+      <div class="r-skeleton-line r-skeleton-pulse" style="width: 72%;"></div>
+    </div>
+  </div>
+
+  <!-- User skeleton -->
+  <div class="r-skeleton-row r-skeleton-row--user">
+    <div class="r-skeleton-bubble r-skeleton-pulse"></div>
+  </div>
+
+  <!-- Assistant skeleton -->
+  <div class="r-skeleton-row r-skeleton-row--assistant">
+    <div class="r-skeleton-avatar r-skeleton-pulse"></div>
+    <div class="r-skeleton-content">
+      <div class="r-skeleton-line r-skeleton-pulse" style="width: 90%;"></div>
+      <div class="r-skeleton-line r-skeleton-pulse" style="width: 45%;"></div>
+    </div>
+  </div>
+
+  <!-- User skeleton -->
+  <div class="r-skeleton-row r-skeleton-row--user">
+    <div class="r-skeleton-bubble r-skeleton-bubble--short r-skeleton-pulse"></div>
+  </div>
+</div>
+
+<style>
+@keyframes r-skeletonPulse {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+.r-skeleton-pulse {
+  animation: r-skeletonPulse 1.6s ease-in-out infinite;
+}
+.r-skeleton-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 16px;
+}
+.r-skeleton-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.r-skeleton-row--user {
+  justify-content: flex-end;
+}
+.r-skeleton-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--r-surface-alt);
+  flex-shrink: 0;
+}
+.r-skeleton-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  max-width: 320px;
+}
+.r-skeleton-line {
+  height: 14px;
+  border-radius: var(--r-radius-xs);
+  background: var(--r-surface-alt);
+}
+.r-skeleton-bubble {
+  width: 200px;
+  height: 42px;
+  border-radius: 18px 18px 4px 18px;
+  background: var(--r-surface-alt);
+}
+.r-skeleton-bubble--short {
+  width: 140px;
+}
+</style>
+
+<div class="r-toast-container">
+  <!-- Success -->
+  <div class="r-toast r-toast--success is-visible">
+    <span class="r-toast-icon">
+      <span class="material-icons-round">check_circle</span>
+    </span>
+    <span class="r-toast-text">Copié dans le presse-papiers</span>
+    <button class="r-toast-close">
+      <span class="material-icons-round">close</span>
+    </button>
+    <div class="r-toast-progress"></div>
+  </div>
+
+  <!-- Error -->
+  <div class="r-toast r-toast--error is-visible" style="margin-top:8px;">
+    <span class="r-toast-icon">
+      <span class="material-icons-round">error_outline</span>
+    </span>
+    <span class="r-toast-text">Erreur lors de l'envoi du message</span>
+    <button class="r-toast-close">
+      <span class="material-icons-round">close</span>
+    </button>
+    <div class="r-toast-progress"></div>
+  </div>
+
+  <!-- Info -->
+  <div class="r-toast r-toast--info is-visible" style="margin-top:8px;">
+    <span class="r-toast-icon">
+      <span class="material-icons-round">info</span>
+    </span>
+    <span class="r-toast-text">Conversation exportée en PDF</span>
+    <button class="r-toast-close">
+      <span class="material-icons-round">close</span>
+    </button>
+    <div class="r-toast-progress"></div>
+  </div>
+</div>
+
+<style>
+.r-toast-container {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+.r-toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--r-bg);
+  border-radius: var(--r-radius-md);
+  box-shadow: var(--r-shadow-lg);
+  border: 1px solid var(--r-border);
+  min-width: 280px;
+  max-width: 420px;
+  pointer-events: auto;
+  position: relative;
+  overflow: hidden;
+
+  opacity: 0;
+  transform: translateY(16px) scale(0.96);
+  transition: all var(--r-transition-spring);
+}
+.r-toast.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.r-toast-icon {
+  flex-shrink: 0;
+  display: flex;
+}
+.r-toast-icon .material-icons-round { font-size: 20px; }
+
+.r-toast--success .r-toast-icon { color: var(--r-success); }
+.r-toast--error .r-toast-icon { color: var(--r-danger); }
+.r-toast--info .r-toast-icon { color: var(--r-info); }
+
+.r-toast--success { border-left: 3px solid var(--r-success); }
+.r-toast--error   { border-left: 3px solid var(--r-danger); }
+.r-toast--info    { border-left: 3px solid var(--r-info); }
+
+.r-toast-text {
+  flex: 1;
+  font-size: 13.5px;
+  font-weight: 560;
+  color: var(--r-text-heading);
+  line-height: 1.35;
+}
+.r-toast-close {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: none;
+  border-radius: var(--r-radius-xs);
+  color: var(--r-text-faint);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--r-transition-fast);
+  font-family: var(--r-font);
+}
+.r-toast-close .material-icons-round { font-size: 18px; }
+.r-toast-close:hover {
+  background: var(--r-surface-alt);
+  color: var(--r-text-body);
+}
+
+/* Auto-dismiss progress bar */
+@keyframes r-toastDismiss {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+.r-toast-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  border-radius: 0 0 0 var(--r-radius-md);
+  animation: r-toastDismiss 4s linear forwards;
+}
+.r-toast--success .r-toast-progress { background: var(--r-success); }
+.r-toast--error .r-toast-progress   { background: var(--r-danger); }
+.r-toast--info .r-toast-progress    { background: var(--r-info); }
+</style>
+
+<div class="r-md">
+  <h2>Introduction aux closures</h2>
+  <p>Une <strong>closure</strong> est une fonction qui <em>mémorise</em> les variables de sa portée externe, même après l'exécution de celle-ci.</p>
+
+  <h3>Pourquoi c'est utile ?</h3>
+  <p>Les closures permettent de créer des <a href="#">fonctions privées</a>, de faire du <strong>currying</strong>, et de maintenir un état encapsulé.</p>
+
+  <blockquote>
+    <p>« Les closures sont l'un des concepts les plus puissants de JavaScript. » — MDN</p>
+  </blockquote>
+
+  <h4>Exemple pratique</h4>
+  <ul>
+    <li>Compteurs encapsulés</li>
+    <li>Event listeners avec contexte</li>
+    <li>Mémorisation (memoization)</li>
+  </ul>
+
+  <ol>
+    <li>Déclarer la fonction externe</li>
+    <li>Définir une variable locale</li>
+    <li>Retourner une fonction interne qui la capture</li>
+  </ol>
+
+  <p>Voici un tableau comparatif :</p>
+  <table>
+    <thead>
+      <tr><th>Concept</th><th>Portée</th><th>Persistance</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Variable locale</td><td>Fonction</td><td>Non</td></tr>
+      <tr><td>Closure</td><td>Fonction parente</td><td>Oui</td></tr>
+      <tr><td>Variable globale</td><td>Programme</td><td>Oui</td></tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <p>Code inline : <code>const fn = () => x;</code> et du texte <del>barré</del>.</p>
+</div>
+
+<style>
+.r-md {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--r-text-body);
+  max-width: 76ch;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Headings */
+.r-md h1, .r-md h2, .r-md h3, .r-md h4 {
+  color: var(--r-text-heading);
+  line-height: 1.3;
+  margin-top: 1.4em;
+  margin-bottom: 0.5em;
+  letter-spacing: -0.01em;
+}
+.r-md h1:first-child, .r-md h2:first-child,
+.r-md h3:first-child, .r-md h4:first-child {
+  margin-top: 0;
+}
+.r-md h1 { font-size: 1.45em; font-weight: 760; }
+.r-md h2 { font-size: 1.25em; font-weight: 720; }
+.r-md h3 { font-size: 1.1em;  font-weight: 680; }
+.r-md h4 { font-size: 1em;    font-weight: 650; }
+
+/* Paragraphs */
+.r-md p {
+  margin: 0 0 0.85em;
+}
+.r-md p:last-child { margin-bottom: 0; }
+
+/* Strong / Em / Del */
+.r-md strong { font-weight: 660; color: var(--r-text-heading); }
+.r-md em { font-style: italic; }
+.r-md del { text-decoration: line-through; color: var(--r-text-muted); }
+
+/* Links */
+.r-md a {
+  color: var(--r-primary);
+  text-decoration: none;
+  font-weight: 550;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--r-transition-fast);
+}
+.r-md a:hover { border-bottom-color: var(--r-primary); }
+
+/* Lists */
+.r-md ul, .r-md ol {
+  margin: 0 0 0.85em;
+  padding-left: 1.5em;
+}
+.r-md li {
+  margin-bottom: 0.3em;
+}
+.r-md li::marker {
+  color: var(--r-primary);
+  font-weight: 600;
+}
+
+/* Blockquote */
+.r-md blockquote {
+  margin: 0.8em 0;
+  padding: 12px 18px;
+  border-left: 3px solid var(--r-primary);
+  background: var(--r-primary-ghost);
+  border-radius: 0 var(--r-radius-sm) var(--r-radius-sm) 0;
+  color: var(--r-text-body);
+  font-style: italic;
+}
+.r-md blockquote p { margin-bottom: 0; }
+
+/* Code inline */
+.r-md code {
+  font-family: var(--r-mono);
+  font-size: 0.88em;
+  background: var(--r-surface-alt);
+  border: 1px solid var(--r-border);
+  padding: 2px 6px;
+  border-radius: var(--r-radius-xs);
+  color: var(--r-text-heading);
+  font-weight: 500;
+}
+
+/* Table */
+.r-md table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.8em 0;
+  font-size: 13.5px;
+}
+.r-md th, .r-md td {
+  padding: 8px 12px;
+  border: 1px solid var(--r-border);
+  text-align: left;
+}
+.r-md th {
+  background: var(--r-surface);
+  font-weight: 650;
+  color: var(--r-text-heading);
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.r-md td {
+  color: var(--r-text-body);
+}
+.r-md tr:nth-child(even) td {
+  background: var(--r-surface);
+}
+
+/* Horizontal Rule */
+.r-md hr {
+  border: none;
+  height: 1px;
+  background: var(--r-border);
+  margin: 1.2em 0;
+}
+</style>
+
+<div class="r-disclaimer">
+  <span class="material-icons-round r-disclaimer-icon">info</span>
+  <span class="r-disclaimer-text">Robert est une IA. Ses réponses peuvent contenir des erreurs. <a href="#" class="r-disclaimer-link">Vérifiez les informations importantes.</a></span>
+</div>
+
+<style>
+.r-disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--r-surface);
+  border-top: 1px solid var(--r-border);
+  flex-shrink: 0;
+}
+.r-disclaimer-icon {
+  font-size: 15px;
+  color: var(--r-text-faint);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.r-disclaimer-text {
+  font-size: 11.5px;
+  color: var(--r-text-faint);
+  line-height: 1.45;
+  font-weight: 450;
+}
+.r-disclaimer-link {
+  color: var(--r-text-muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color var(--r-transition-fast);
+}
+.r-disclaimer-link:hover {
+  color: var(--r-primary);
+}
+</style>
+
+<div class="r-embed-snippet">
+  <div class="r-embed-header">
+    <span class="material-icons-round" style="font-size:18px; color:var(--r-primary);">integration_instructions</span>
+    <span class="r-embed-title">Intégrez Robert à votre site</span>
+  </div>
+  <div class="r-embed-desc">
+    Copiez ce snippet et collez-le juste avant la balise <code>&lt;/body&gt;</code> de votre page HTML.
+  </div>
+  <div class="r-embed-code-wrap">
+    <div class="r-embed-code-header">
+      <span style="font-size:12px; font-weight:650; color:var(--r-text-muted); font-family:var(--r-mono);">html</span>
+      <button class="r-embed-copy" onclick="this.querySelector('.label').textContent='Copié !'; this.classList.add('is-copied'); setTimeout(()=>{this.querySelector('.label').textContent='Copier'; this.classList.remove('is-copied');}, 2000);">
+        <span class="material-icons-round" style="font-size:15px;">content_copy</span>
+        <span class="label">Copier</span>
+      </button>
+    </div>
+    <pre class="r-embed-code"><code>&lt;!-- Robert Chat Widget --&gt;
+&lt;script&gt;
+  (function(w,d,s,o){
+    w['RobertWidget']=o;
+    w[o]=w[o]||function(){(w[o].q=w[o].q||[]).push(arguments)};
+    var js=d.createElement(s);js.async=1;
+    js.src='https://cdn.robert.ai/widget/v2/loader.js';
+    d.head.appendChild(js);
+  })(window,document,'script','robert');
+
+  robert('init', {
+    projectId : 'proj_abc123xyz',
+    position  : 'bottom-right',
+    locale    : 'fr',
+    theme     : 'auto',
+    primaryColor : '#3e5de7',
+    greeting  : 'Bonjour ! Comment puis-je vous aider ?'
+  });
+&lt;/script&gt;</code></pre>
+  </div>
+  <div class="r-embed-options">
+    <div class="r-embed-option">
+      <span class="r-embed-option-key">projectId</span>
+      <span class="r-embed-option-val">Obligatoire — identifiant de votre projet</span>
+    </div>
+    <div class="r-embed-option">
+      <span class="r-embed-option-key">position</span>
+      <span class="r-embed-option-val"><code>bottom-right</code> | <code>bottom-left</code></span>
+    </div>
+    <div class="r-embed-option">
+      <span class="r-embed-option-key">locale</span>
+      <span class="r-embed-option-val"><code>fr</code> | <code>en</code> | <code>es</code> | <code>de</code></span>
+    </div>
+    <div class="r-embed-option">
+      <span class="r-embed-option-key">theme</span>
+      <span class="r-embed-option-val"><code>light</code> | <code>dark</code> | <code>auto</code></span>
+    </div>
+  </div>
+</div>
+
+<style>
+.r-embed-snippet {
+  background: var(--r-bg);
+  border: 1.5px solid var(--r-border);
+  border-radius: var(--r-radius-lg);
+  overflow: hidden;
+  max-width: 580px;
+}
+.r-embed-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px 0;
+}
+.r-embed-title {
+  font-size: 15px;
+  font-weight: 680;
+  color: var(--r-text-heading);
+}
+.r-embed-desc {
+  padding: 8px 20px 14px;
+  font-size: 13.5px;
+  color: var(--r-text-muted);
+  line-height: 1.5;
+}
+.r-embed-desc code {
+  font-family: var(--r-mono);
+  font-size: 0.9em;
+  background: var(--r-surface-alt);
+  padding: 1px 5px;
+  border-radius: var(--r-radius-xs);
+  border: 1px solid var(--r-border);
+  color: var(--r-text-heading);
+}
+.r-embed-code-wrap {
+  margin: 0 16px;
+  border: 1px solid #d0d7de;
+  border-radius: var(--r-radius-md);
+  overflow: hidden;
+}
+.r-embed-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  background: #e8ecf0;
+  border-bottom: 1px solid #d0d7de;
+}
+.r-embed-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  font-family: var(--r-font);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--r-text-muted);
+  background: var(--r-bg);
+  border: 1px solid var(--r-border);
+  border-radius: var(--r-radius-xs);
+  cursor: pointer;
+  transition: all var(--r-transition-fast);
+}
+.r-embed-copy:hover {
+  color: var(--r-primary);
+  border-color: var(--r-primary-border);
+}
+.r-embed-copy.is-copied {
+  color: var(--r-success);
+  border-color: var(--r-success-border);
+  background: var(--r-success-light);
+}
+.r-embed-code {
+  background: #f6f8fa;
+  color: #24292f;
+  padding: 14px 16px;
+  overflow-x: auto;
+  font-family: var(--r-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  margin: 0;
+}
+.r-embed-code code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+.r-embed-options {
+  padding: 14px 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-top: 1px solid var(--r-border);
+  margin-top: 14px;
+}
+.r-embed-option {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+.r-embed-option-key {
+  font-family: var(--r-mono);
+  font-size: 12.5px;
+  font-weight: 650;
+  color: var(--r-primary);
+  flex-shrink: 0;
+}
+.r-embed-option-val {
+  font-size: 12.5px;
+  color: var(--r-text-muted);
+}
+.r-embed-option-val code {
+  font-family: var(--r-mono);
+  font-size: 0.92em;
+  background: var(--r-surface-alt);
+  padding: 1px 5px;
+  border-radius: var(--r-radius-xs);
+  border: 1px solid var(--r-border);
+  color: var(--r-text-heading);
+}
+</style>
+
+<div class="r-settings">
+  <div class="r-settings-header">
+    <button class="r-settings-back">
+      <span class="material-icons-round">arrow_back</span>
+    </button>
+    <span class="r-settings-title">Paramètres</span>
+    <div style="width:34px;"></div>
+  </div>
+
+  <div class="r-settings-body">
+    <!-- Section Apparence -->
+    <div class="r-settings-section">
+      <div class="r-settings-section-title">Apparence</div>
+
+      <div class="r-settings-row">
+        <div class="r-settings-row-left">
+          <span class="material-icons-round r-settings-row-icon">palette</span>
+          <div class="r-settings-row-info">
+            <span class="r-settings-row-label">Thème</span>
+            <span class="r-settings-row-desc">Apparence du widget</span>
+          </div>
+        </div>
+        <select class="r-settings-select">
+          <option>Automatique</option>
+          <option>Clair</option>
+          <option selected>Sombre</option>
+        </select>
+      </div>
+
+      <div class="r-settings-row">
+        <div class="r-settings-row-left">
+          <span class="material-icons-round r-settings-row-icon">text_fields</span>
+          <div class="r-settings-row-info">
+            <span class="r-settings-row-label">Taille du texte</span>
+            <span class="r-settings-row-desc">Ajuster la lisibilité</span>
+          </div>
+        </div>
+        <select class="r-settings-select">
+          <option>Petit</option>
+          <option selected>Normal</option>
+          <option>Grand</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Section Comportement -->
+    <div class="r-settings-section">
+      <div class="r-settings-section-title">Comportement</div>
+
+      <div class="r-settings-row">
+        <div class="r-settings-row-left">
+          <span class="material-icons-round r-settings-row-icon">volume_up</span>
+          <div class="r-settings-row-info">
+            <span class="r-settings-row-label">Sons de notification</span>
+            <span class="r-settings-row-desc">Jouer un son à la réception</span>
+          </div>
+        </div>
+        <label class="r-settings-toggle">
+          <input type="checkbox" checked>
+          <span class="r-settings-toggle-track">
+            <span class="r-settings-toggle-thumb"></span>
+          </span>
+        </label>
+      </div>
+
+      <div class="r-settings-row">
+        <div class="r-settings-row-left">
+          <span class="material-icons-round r-settings-row-icon">send</span>
+          <div class="r-settings-row-info">
+            <span class="r-settings-row-label">Envoyer avec Entrée</span>
+            <span class="r-settings-row-desc">Shift+Entrée pour sauter une ligne</span>
+          </div>
+        </div>
+        <label class="r-settings-toggle">
+          <input type="checkbox" checked>
+          <span class="r-settings-toggle-track">
+            <span class="r-settings-toggle-thumb"></span>
+          </span>
+        </label>
+      </div>
+
+      <div class="r-settings-row">
+        <div class="r-settings-row-left">
+          <span class="material-icons-round r-settings-row-icon">auto_awesome</span>
+          <div class="r-settings-row-info">
+            <span class="r-settings-row-label">Afficher le raisonnement</span>
+            <span class="r-settings-row-desc">Montrer le bloc « thinking »</span>
+          </div>
+        </div>
+        <label class="r-settings-toggle">
+          <input type="checkbox">
+          <span class="r-settings-toggle-track">
+            <span class="r-settings-toggle-thumb"></span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Section Langue -->
+    <div class="r-settings-section">
+      <div class="r-settings-section-title">Langue</div>
+      <div class="r-settings-row">
+        <div class="r-settings-row-left">
+          <span class="material-icons-round r-settings-row-icon">translate</span>
+          <div class="r-settings-row-info">
+            <span class="r-settings-row-label">Langue de l'interface</span>
+          </div>
+        </div>
+        <select class="r-settings-select">
+          <option selected>Français</option>
+          <option>English</option>
+          <option>Español</option>
+          <option>Deutsch</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Section Données -->
+    <div class="r-settings-section">
+      <div class="r-settings-section-title">Données</div>
+      <div class="r-settings-row">
+        <div class="r-settings-row-left">
+          <span class="material-icons-round r-settings-row-icon" style="color:var(--r-danger);">delete_forever</span>
+          <div class="r-settings-row-info">
+            <span class="r-settings-row-label" style="color:var(--r-danger);">Supprimer toutes les conversations</span>
+            <span class="r-settings-row-desc">Action irréversible</span>
+          </div>
+        </div>
+        <button class="r-settings-danger-btn">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.r-settings {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--r-bg);
+  max-width: 420px;
+}
+.r-settings-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--r-border);
+  flex-shrink: 0;
+  min-height: 60px;
+}
+.r-settings-back {
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: none;
+  border-radius: var(--r-radius-sm);
+  color: var(--r-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--r-transition-fast);
+  font-family: var(--r-font);
+}
+.r-settings-back .material-icons-round { font-size: 22px; }
+.r-settings-back:hover { background: var(--r-surface-alt); color: var(--r-text-body); }
+.r-settings-title {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--r-text-heading);
+  text-align: center;
+}
+.r-settings-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--r-border) transparent;
+}
+.r-settings-section {
+  padding: 8px 0;
+}
+.r-settings-section + .r-settings-section {
+  border-top: 1px solid var(--r-border);
+}
+.r-settings-section-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--r-text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 8px 20px 6px;
+}
+.r-settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 20px;
+  transition: background var(--r-transition-fast);
+}
+.r-settings-row:hover { background: var(--r-surface); }
+.r-settings-row-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+.r-settings-row-icon {
+  font-size: 20px;
+  color: var(--r-text-muted);
+  flex-shrink: 0;
+}
+.r-settings-row-info { flex: 1; min-width: 0; }
+.r-settings-row-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 580;
+  color: var(--r-text-heading);
+}
+.r-settings-row-desc {
+  display: block;
+  font-size: 12px;
+  color: var(--r-text-faint);
+  margin-top: 1px;
+}
+
+/* Select */
+.r-settings-select {
+  padding: 6px 28px 6px 10px;
+  font-family: var(--r-font);
+  font-size: 13px;
+  font-weight: 560;
+  color: var(--r-text-body);
+  background: var(--r-surface);
+  border: 1.5px solid var(--r-border);
+  border-radius: var(--r-radius-sm);
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--r-transition);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  flex-shrink: 0;
+}
+.r-settings-select:focus { border-color: var(--r-primary); }
+
+/* Toggle */
+.r-settings-toggle {
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.r-settings-toggle input { display: none; }
+.r-settings-toggle-track {
+  display: block;
+  width: 44px;
+  height: 24px;
+  border-radius: var(--r-radius-full);
+  background: var(--r-border-strong);
+  transition: background var(--r-transition);
+  position: relative;
+}
+.r-settings-toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  transition: transform var(--r-transition-spring);
+}
+.r-settings-toggle input:checked + .r-settings-toggle-track {
+  background: var(--r-primary);
+}
+.r-settings-toggle input:checked + .r-settings-toggle-track .r-settings-toggle-thumb {
+  transform: translateX(20px);
+}
+
+/* Danger button */
+.r-settings-danger-btn {
+  padding: 6px 14px;
+  font-family: var(--r-font);
+  font-size: 13px;
+  font-weight: 620;
+  color: var(--r-danger);
+  background: var(--r-danger-light);
+  border: 1.5px solid var(--r-danger-border);
+  border-radius: var(--r-radius-sm);
+  cursor: pointer;
+  transition: all var(--r-transition);
+  flex-shrink: 0;
+}
+.r-settings-danger-btn:hover {
+  background: var(--r-danger);
+  color: #fff;
+  border-color: var(--r-danger);
+}
+</style>
+
+<div class="r-dark-demo" data-theme="dark">
+  <div class="r-dark-preview">
+    <div class="r-dark-preview-header">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--r-primary);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;">R</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:var(--r-text-heading);">Robert</div>
+          <div style="font-size:11px;color:var(--r-text-muted);">En ligne</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="r-dark-preview-body">
+      <div style="display:flex;justify-content:flex-end;padding:6px 0;">
+        <div style="padding:10px 16px;background:var(--r-primary);color:#fff;border-radius:16px 16px 4px 16px;font-size:13.5px;">Salut Robert !</div>
+      </div>
+      <div style="display:flex;gap:8px;padding:6px 0;align-items:flex-start;">
+        <div style="width:26px;height:26px;border-radius:50%;background:var(--r-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">R</div>
+        <div style="font-size:13.5px;line-height:1.6;color:var(--r-text-body);">Bonjour ! Comment puis-je vous aider ?</div>
+      </div>
+    </div>
+
+    <div class="r-dark-preview-composer">
+      <div style="display:flex;align-items:center;gap:6px;background:var(--r-surface);border:1.5px solid var(--r-border);border-radius:var(--r-radius-md);padding:8px 12px;">
+        <span style="flex:1;font-size:13px;color:var(--r-text-faint);">Écrivez votre message…</span>
+        <div style="width:28px;height:28px;border-radius:var(--r-radius-sm);background:var(--r-primary);display:flex;align-items:center;justify-content:center;">
+          <span class="material-icons-round" style="font-size:16px;color:#fff;">arrow_upward</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="r-dark-label">
+    <span class="material-icons-round" style="font-size:16px;">dark_mode</span>
+    Aperçu Dark Mode
+  </div>
+</div>
+
+<style>
+/* ========== DARK THEME TOKENS ========== */
+[data-theme="dark"] {
+  --r-primary: #6580f5;
+  --r-primary-hover: #7b92f7;
+  --r-primary-active: #5570e8;
+  --r-primary-light: rgba(101, 128, 245, 0.12);
+  --r-primary-border: rgba(101, 128, 245, 0.25);
+  --r-primary-ghost: rgba(101, 128, 245, 0.08);
+
+  --r-text: #e2e8f0;
+  --r-text-heading: #f1f5f9;
+  --r-text-body: #cbd5e1;
+  --r-text-muted: #94a3b8;
+  --r-text-faint: #64748b;
+
+  --r-surface: #1e293b;
+  --r-surface-alt: #253349;
+  --r-bg: #0f172a;
+
+  --r-border: #1e293b;
+  --r-border-strong: #334155;
+
+  --r-danger: #fb7185;
+  --r-danger-light: rgba(251, 113, 133, 0.1);
+  --r-danger-border: rgba(251, 113, 133, 0.2);
+
+  --r-warning: #fbbf24;
+  --r-warning-light: rgba(251, 191, 36, 0.1);
+  --r-warning-border: rgba(251, 191, 36, 0.2);
+
+  --r-success: #34d399;
+  --r-success-light: rgba(52, 211, 153, 0.1);
+  --r-success-border: rgba(52, 211, 153, 0.2);
+
+  --r-info: #60a5fa;
+  --r-info-light: rgba(96, 165, 250, 0.1);
+  --r-info-border: rgba(96, 165, 250, 0.2);
+
+  --r-shadow-sm: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.4);
+  --r-shadow-md: 0 4px 12px rgba(0,0,0,0.35);
+  --r-shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.45), 0 8px 10px -6px rgba(0,0,0,0.35);
+  --r-shadow-primary: 0 3px 10px rgba(101, 128, 245, 0.2);
+}
+
+/* Demo wrapper */
+.r-dark-demo {
+  max-width: 380px;
+}
+.r-dark-preview {
+  border-radius: var(--r-radius-lg);
+  border: 1px solid var(--r-border);
+  overflow: hidden;
+  background: var(--r-bg);
+  box-shadow: var(--r-shadow-lg);
+}
+.r-dark-preview-header {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--r-border);
+}
+.r-dark-preview-body {
+  padding: 12px 16px;
+  min-height: 100px;
+}
+.r-dark-preview-composer {
+  padding: 10px 12px;
+  border-top: 1px solid var(--r-border);
+}
+.r-dark-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 620;
+  color: var(--r-text-muted);
+  justify-content: center;
+}
+
+/* Auto dark via prefers-color-scheme (alternative to data-theme) */
+@media (prefers-color-scheme: dark) {
+  [data-theme="auto"] {
+    --r-primary: #6580f5;
+    --r-primary-hover: #7b92f7;
+    --r-primary-active: #5570e8;
+    --r-primary-light: rgba(101, 128, 245, 0.12);
+    --r-primary-border: rgba(101, 128, 245, 0.25);
+    --r-primary-ghost: rgba(101, 128, 245, 0.08);
+    --r-text: #e2e8f0;
+    --r-text-heading: #f1f5f9;
+    --r-text-body: #cbd5e1;
+    --r-text-muted: #94a3b8;
+    --r-text-faint: #64748b;
+    --r-surface: #1e293b;
+    --r-surface-alt: #253349;
+    --r-bg: #0f172a;
+    --r-border: #1e293b;
+    --r-border-strong: #334155;
+    --r-danger: #fb7185;
+    --r-danger-light: rgba(251, 113, 133, 0.1);
+    --r-danger-border: rgba(251, 113, 133, 0.2);
+    --r-warning: #fbbf24;
+    --r-warning-light: rgba(251, 191, 36, 0.1);
+    --r-warning-border: rgba(251, 191, 36, 0.2);
+    --r-success: #34d399;
+    --r-success-light: rgba(52, 211, 153, 0.1);
+    --r-success-border: rgba(52, 211, 153, 0.2);
+    --r-info: #60a5fa;
+    --r-info-light: rgba(96, 165, 250, 0.1);
+    --r-info-border: rgba(96, 165, 250, 0.2);
+    --r-shadow-sm: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.4);
+    --r-shadow-md: 0 4px 12px rgba(0,0,0,0.35);
+    --r-shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.45), 0 8px 10px -6px rgba(0,0,0,0.35);
+    --r-shadow-primary: 0 3px 10px rgba(101, 128, 245, 0.2);
+  }
+}
+</style>
+
+<div class="r-dropzone is-active">
+  <div class="r-dropzone-inner">
+    <div class="r-dropzone-icon">
+      <span class="material-icons-round">cloud_upload</span>
+    </div>
+    <div class="r-dropzone-title">Déposez vos fichiers ici</div>
+    <div class="r-dropzone-desc">Images, PDF, documents — 10 Mo max par fichier</div>
+    <div class="r-dropzone-formats">
+      <span class="r-dropzone-format">.pdf</span>
+      <span class="r-dropzone-format">.png</span>
+      <span class="r-dropzone-format">.jpg</span>
+      <span class="r-dropzone-format">.docx</span>
+      <span class="r-dropzone-format">.txt</span>
+    </div>
+  </div>
+</div>
+
+<style>
+.r-dropzone {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--r-transition);
+}
+.r-dropzone.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.r-dropzone-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  padding: 40px 32px;
+  border: 2.5px dashed var(--r-primary);
+  border-radius: var(--r-radius-xl);
+  background: var(--r-primary-ghost);
+  width: 100%;
+  max-width: 360px;
+  animation: r-dropzoneBounce 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes r-dropzoneBounce {
+  from { transform: scale(0.92); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.r-dropzone-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--r-primary-light);
+  color: var(--r-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: r-dropzoneFloat 2s ease-in-out infinite alternate;
+}
+@keyframes r-dropzoneFloat {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-6px); }
+}
+.r-dropzone-icon .material-icons-round { font-size: 32px; }
+
+.r-dropzone-title {
+  font-size: 17px;
+  font-weight: 720;
+  color: var(--r-text-heading);
+  letter-spacing: -0.01em;
+}
+.r-dropzone-desc {
+  font-size: 13.5px;
+  color: var(--r-text-muted);
+  line-height: 1.5;
+}
+.r-dropzone-formats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 4px;
+}
+.r-dropzone-format {
+  padding: 3px 10px;
+  background: var(--r-bg);
+  border: 1px solid var(--r-border);
+  border-radius: var(--r-radius-full);
+  font-family: var(--r-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--r-text-muted);
+}
+</style>
+
+<div style="display:flex; flex-direction:column; gap:8px; max-width:420px;">
+  <!-- Online -->
+  <div class="r-conn-bar r-conn-bar--online">
+    <span class="r-conn-dot"></span>
+    <span class="r-conn-text">Connecté</span>
+  </div>
+
+  <!-- Reconnecting -->
+  <div class="r-conn-bar r-conn-bar--reconnecting">
+    <span class="r-conn-spinner"></span>
+    <span class="r-conn-text">Reconnexion en cours…</span>
+  </div>
+
+  <!-- Offline -->
+  <div class="r-conn-bar r-conn-bar--offline">
+    <span class="material-icons-round" style="font-size:16px;">cloud_off</span>
+    <span class="r-conn-text">Hors ligne — les messages seront envoyés à la reconnexion</span>
+    <button class="r-conn-retry">Réessayer</button>
+  </div>
+</div>
+
+<style>
+.r-conn-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: var(--r-radius-sm);
+  font-size: 12.5px;
+  font-weight: 560;
+  animation: r-connSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes r-connSlide {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Online */
+.r-conn-bar--online {
+  background: var(--r-success-light);
+  color: var(--r-success);
+  border: 1px solid var(--r-success-border);
+}
+.r-conn-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+  animation: r-connPulse 2s ease-in-out infinite;
+}
+@keyframes r-connPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Reconnecting */
+.r-conn-bar--reconnecting {
+  background: var(--r-warning-light);
+  color: var(--r-warning);
+  border: 1px solid var(--r-warning-border);
+}
+@keyframes r-connSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.r-conn-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--r-warning-border);
+  border-top-color: var(--r-warning);
+  border-radius: 50%;
+  animation: r-connSpin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+/* Offline */
+.r-conn-bar--offline {
+  background: var(--r-danger-light);
+  color: var(--r-danger);
+  border: 1px solid var(--r-danger-border);
+}
+.r-conn-text {
+  flex: 1;
+  line-height: 1.35;
+}
+.r-conn-retry {
+  padding: 4px 12px;
+  font-family: var(--r-font);
+  font-size: 12px;
+  font-weight: 640;
+  color: var(--r-danger);
+  background: var(--r-bg);
+  border: 1.5px solid var(--r-danger-border);
+  border-radius: var(--r-radius-xs);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all var(--r-transition-fast);
+}
+.r-conn-retry:hover {
+  background: var(--r-danger);
+  color: #fff;
+  border-color: var(--r-danger);
+}
+</style>
+
+<div class="r-feedback-overlay">
+  <div class="r-feedback-modal">
+    <div class="r-feedback-header">
+      <span class="material-icons-round" style="font-size:22px; color:var(--r-primary);">feedback</span>
+      <div class="r-feedback-header-text">
+        <div class="r-feedback-title">Dites-nous ce qui n'allait pas</div>
+        <div class="r-feedback-subtitle">Votre retour nous aide à améliorer Robert</div>
+      </div>
+      <button class="r-feedback-close-btn">
+        <span class="material-icons-round">close</span>
+      </button>
+    </div>
+
+    <div class="r-feedback-body">
+      <div class="r-feedback-reasons">
+        <label class="r-feedback-reason">
+          <input type="checkbox" name="reason">
+          <span class="r-feedback-reason-check">
+            <span class="material-icons-round" style="font-size:14px;">check</span>
+          </span>
+          <span class="r-feedback-reason-label">Réponse incorrecte ou inexacte</span>
+        </label>
+        <label class="r-feedback-reason">
+          <input type="checkbox" name="reason">
+          <span class="r-feedback-reason-check">
+            <span class="material-icons-round" style="font-size:14px;">check</span>
+          </span>
+          <span class="r-feedback-reason-label">Ne répond pas à ma question</span>
+        </label>
+        <label class="r-feedback-reason">
+          <input type="checkbox" name="reason">
+          <span class="r-feedback-reason-check">
+            <span class="material-icons-round" style="font-size:14px;">check</span>
+          </span>
+          <span class="r-feedback-reason-label">Réponse trop longue ou confuse</span>
+        </label>
+        <label class="r-feedback-reason">
+          <input type="checkbox" name="reason">
+          <span class="r-feedback-reason-check">
+            <span class="material-icons-round" style="font-size:14px;">check</span>
+          </span>
+          <span class="r-feedback-reason-label">Contenu offensant ou inapproprié</span>
+        </label>
+        <label class="r-feedback-reason">
+          <input type="checkbox" name="reason">
+          <span class="r-feedback-reason-check">
+            <span class="material-icons-round" style="font-size:14px;">check</span>
+          </span>
+          <span class="r-feedback-reason-label">Autre problème</span>
+        </label>
+      </div>
+
+      <div class="r-feedback-comment-wrap">
+        <label class="r-feedback-comment-label">Commentaire (optionnel)</label>
+        <textarea class="r-feedback-comment" placeholder="Décrivez le problème en détail…" rows="3"></textarea>
+      </div>
+    </div>
+
+    <div class="r-feedback-footer">
+      <button class="r-feedback-cancel">Annuler</button>
+      <button class="r-feedback-submit">
+        <span class="material-icons-round" style="font-size:18px;">send</span>
+        Envoyer
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+.r-feedback-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100001;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: r-fadeIn 0.2s ease;
+}
+@keyframes r-fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.r-feedback-modal {
+  background: var(--r-bg);
+  border: 1px solid var(--r-border);
+  border-radius: var(--r-radius-xl);
+  box-shadow: var(--r-shadow-lg);
+  width: 100%;
+  max-width: 440px;
+  overflow: hidden;
+  animation: r-modalIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes r-modalIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.r-feedback-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 20px 20px 14px;
+}
+.r-feedback-header-text { flex: 1; }
+.r-feedback-title {
+  font-size: 16px;
+  font-weight: 720;
+  color: var(--r-text-heading);
+}
+.r-feedback-subtitle {
+  font-size: 13px;
+  color: var(--r-text-muted);
+  margin-top: 2px;
+}
+.r-feedback-close-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  border-radius: var(--r-radius-sm);
+  color: var(--r-text-faint);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--r-transition-fast);
+  flex-shrink: 0;
+  font-family: var(--r-font);
+}
+.r-feedback-close-btn .material-icons-round { font-size: 20px; }
+.r-feedback-close-btn:hover { background: var(--r-surface-alt); color: var(--r-text-body); }
+
+.r-feedback-body {
+  padding: 0 20px 16px;
+}
+.r-feedback-reasons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.r-feedback-reason {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1.5px solid var(--r-border);
+  border-radius: var(--r-radius-md);
+  cursor: pointer;
+  transition: all var(--r-transition);
+}
+.r-feedback-reason:hover { border-color: var(--r-primary-border); background: var(--r-surface); }
+.r-feedback-reason input { display: none; }
+.r-feedback-reason-check {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--r-radius-xs);
+  border: 2px solid var(--r-border-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: transparent;
+  transition: all var(--r-transition);
+}
+.r-feedback-reason input:checked ~ .r-feedback-reason-check {
+  background: var(--r-primary);
+  border-color: var(--r-primary);
+  color: #fff;
+}
+.r-feedback-reason-label {
+  font-size: 14px;
+  font-weight: 530;
+  color: var(--r-text-body);
+}
+
+.r-feedback-comment-wrap {
+  margin-top: 14px;
+}
+.r-feedback-comment-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 620;
+  color: var(--r-text-heading);
+  margin-bottom: 6px;
+}
+.r-feedback-comment {
+  width: 100%;
+  padding: 10px 14px;
+  font-family: var(--r-font);
+  font-size: 14px;
+  color: var(--r-text);
+  background: var(--r-surface);
+  border: 1.5px solid var(--r-border);
+  border-radius: var(--r-radius-md);
+  outline: none;
+  resize: vertical;
+  min-height: 72px;
+  transition: border-color var(--r-transition);
+  line-height: 1.5;
+}
+.r-feedback-comment::placeholder { color: var(--r-text-faint); }
+.r-feedback-comment:focus {
+  border-color: var(--r-primary);
+  box-shadow: 0 0 0 3px rgba(62, 93, 231, 0.08);
+}
+
+.r-feedback-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--r-border);
+}
+.r-feedback-cancel {
+  padding: 9px 18px;
+  font-family: var(--r-font);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--r-text-muted);
+  background: none;
+  border: 1.5px solid var(--r-border);
+  border-radius: var(--r-radius-sm);
+  cursor: pointer;
+  transition: all var(--r-transition);
+}
+.r-feedback-cancel:hover { background: var(--r-surface); border-color: var(--r-border-strong); }
+.r-feedback-submit {
+  padding: 9px 20px;
+  font-family: var(--r-font);
+  font-size: 14px;
+  font-weight: 640;
+  color: #fff;
+  background: var(--r-primary);
+  border: 1.5px solid var(--r-primary);
+  border-radius: var(--r-radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--r-transition);
+}
+.r-feedback-submit:hover { background: var(--r-primary-hover); box-shadow: var(--r-shadow-primary); }
+.r-feedback-submit:active { background: var(--r-primary-active); }
+</style>
+
+<div class="r-search">
+  <div class="r-search-input-wrap">
+    <span class="material-icons-round r-search-icon">search</span>
+    <input type="text" class="r-search-input" placeholder="Rechercher dans les conversations…" value="closure">
+    <button class="r-search-clear">
+      <span class="material-icons-round">close</span>
+    </button>
+  </div>
+
+  <div class="r-search-results">
+    <div class="r-search-result-count">3 résultats pour « closure »</div>
+
+    <button class="r-search-result">
+      <span class="material-icons-round r-search-result-icon">chat_bubble_outline</span>
+      <div class="r-search-result-body">
+        <div class="r-search-result-title">Explique-moi les <mark>closure</mark>s en JS</div>
+        <div class="r-search-result-preview">Une <mark>closure</mark> est une fonction qui mémorise les variables…</div>
+        <div class="r-search-result-meta">Aujourd'hui, 14:32 · 8 messages</div>
+      </div>
+    </button>
+
+    <button class="r-search-result">
+      <span class="material-icons-round r-search-result-icon">chat_bubble_outline</span>
+      <div class="r-search-result-body">
+        <div class="r-search-result-title">Patterns avancés JavaScript</div>
+        <div class="r-search-result-preview">…le pattern module utilise des <mark>closure</mark>s pour encapsuler…</div>
+        <div class="r-search-result-meta">Hier, 09:15 · 12 messages</div>
+      </div>
+    </button>
+
+    <button class="r-search-result">
+      <span class="material-icons-round r-search-result-icon">chat_bubble_outline</span>
+      <div class="r-search-result-body">
+        <div class="r-search-result-title">Interview technique React</div>
+        <div class="r-search-result-preview">…les hooks s'appuient sur les <mark>closure</mark>s de JavaScript…</div>
+        <div class="r-search-result-meta">Lun., 16:48 · 5 messages</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<style>
+.r-search {
+  max-width: 420px;
+  background: var(--r-bg);
+}
+.r-search-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--r-surface);
+  border: 1.5px solid var(--r-border);
+  border-radius: var(--r-radius-md);
+  margin: 12px 14px 0;
+  transition: border-color var(--r-transition), box-shadow var(--r-transition);
+}
+.r-search-input-wrap:focus-within {
+  border-color: var(--r-primary);
+  box-shadow: 0 0 0 3px rgba(62, 93, 231, 0.08);
+  background: var(--r-bg);
+}
+.r-search-icon {
+  font-size: 20px;
+  color: var(--r-text-faint);
+  flex-shrink: 0;
+}
+.r-search-input {
+  flex: 1;
+  border: none;
+  background: none;
+  outline: none;
+  font-family: var(--r-font);
+  font-size: 14px;
+  color: var(--r-text);
+  font-weight: 500;
+}
+.r-search-input::placeholder { color: var(--r-text-faint); }
+.r-search-clear {
+  width: 26px;
+  height: 26px;
+  border: none;
+  background: var(--r-surface-alt);
+  border-radius: 50%;
+  color: var(--r-text-faint);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--r-transition-fast);
+  font-family: var(--r-font);
+}
+.r-search-clear .material-icons-round { font-size: 16px; }
+.r-search-clear:hover { background: var(--r-danger-light); color: var(--r-danger); }
+
+.r-search-results {
+  padding: 10px 14px;
+}
+.r-search-result-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--r-text-faint);
+  margin-bottom: 8px;
+  padding: 0 4px;
+}
+.r-search-result {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  border-radius: var(--r-radius-md);
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--r-transition-fast);
+  font-family: var(--r-font);
+}
+.r-search-result:hover { background: var(--r-surface); }
+.r-search-result-icon {
+  font-size: 18px;
+  color: var(--r-text-faint);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+.r-search-result-body { flex: 1; min-width: 0; }
+.r-search-result-title {
+  font-size: 13.5px;
+  font-weight: 620;
+  color: var(--r-text-heading);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.r-search-result-preview {
+  font-size: 12.5px;
+  color: var(--r-text-muted);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.45;
+}
+.r-search-result-meta {
+  font-size: 11px;
+  color: var(--r-text-faint);
+  margin-top: 3px;
+  font-weight: 500;
+}
+.r-search-result mark {
+  background: rgba(62, 93, 231, 0.15);
+  color: var(--r-primary);
+  font-weight: 650;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+</style>
+
+<div style="display:flex; flex-direction:column; gap:10px; max-width:340px;">
+  <!-- Version pleine largeur sidebar -->
+  <button class="r-new-chat r-new-chat--full">
+    <span class="material-icons-round" style="font-size:20px;">add</span>
+    <span class="r-new-chat-label">Nouvelle conversation</span>
+  </button>
+
+  <!-- Version compacte header -->
+  <button class="r-new-chat r-new-chat--compact" title="Nouvelle conversation">
+    <span class="material-icons-round" style="font-size:20px;">add_comment</span>
+  </button>
+
+  <!-- Version empty state (après suppression) -->
+  <button class="r-new-chat r-new-chat--empty">
+    <div class="r-new-chat-empty-icon">
+      <span class="material-icons-round" style="font-size:28px;">forum</span>
+    </div>
+    <span class="r-new-chat-empty-title">Aucune conversation</span>
+    <span class="r-new-chat-empty-desc">Démarrez un nouveau chat avec Robert</span>
+    <span class="r-new-chat-empty-cta">
+      <span class="material-icons-round" style="font-size:18px;">add</span>
+      Commencer
+    </span>
+  </button>
+</div>
+
+<style>
+/* Full width sidebar button */
+.r-new-chat--full {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--r-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--r-radius-md);
+  font-family: var(--r-font);
+  cursor: pointer;
+  transition: all var(--r-transition);
+}
+.r-new-chat--full:hover {
+  background: var(--r-primary-hover);
+  box-shadow: var(--r-shadow-primary);
+  transform: translateY(-1px);
+}
+.r-new-chat--full:active {
+  background: var(--r-primary-active);
+  transform: translateY(0);
+}
+.r-new-chat-label {
+  font-size: 14px;
+  font-weight: 640;
+}
+
+/* Compact icon button */
+.r-new-chat--compact {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r-radius-sm);
+  border: 1.5px solid var(--r-border);
+  background: var(--r-bg);
+  color: var(--r-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--r-transition);
+  font-family: var(--r-font);
+}
+.r-new-chat--compact:hover {
+  border-color: var(--r-primary-border);
+  color: var(--r-primary);
+  background: var(--r-primary-light);
+}
+
+/* Empty state button */
+.r-new-chat--empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 32px 24px;
+  background: var(--r-surface);
+  border: 1.5px dashed var(--r-border);
+  border-radius: var(--r-radius-lg);
+  cursor: pointer;
+  transition: all var(--r-transition);
+  text-align: center;
+  font-family: var(--r-font);
+}
+.r-new-chat--empty:hover {
+  border-color: var(--r-primary-border);
+  border-style: solid;
+  background: var(--r-primary-ghost);
+}
+.r-new-chat-empty-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--r-primary-light);
+  color: var(--r-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+.r-new-chat-empty-title {
+  font-size: 15px;
+  font-weight: 680;
+  color: var(--r-text-heading);
+}
+.r-new-chat-empty-desc {
+  font-size: 13px;
+  color: var(--r-text-muted);
+}
+.r-new-chat-empty-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 6px;
+  padding: 7px 18px;
+  background: var(--r-primary);
+  color: #fff;
+  border-radius: var(--r-radius-full);
+  font-size: 13px;
+  font-weight: 620;
+  transition: background var(--r-transition);
+}
+.r-new-chat--empty:hover .r-new-chat-empty-cta {
+  background: var(--r-primary-hover);
+}
+</style>
+
+<div class="r-confirm-overlay">
+  <div class="r-confirm-modal">
+    <div class="r-confirm-icon-wrap">
+      <span class="material-icons-round" style="font-size:28px;">delete_forever</span>
+    </div>
+    <h3 class="r-confirm-title">Supprimer cette conversation ?</h3>
+    <p class="r-confirm-desc">La conversation <strong>« Closures en JavaScript »</strong> sera définitivement supprimée. Cette action est irréversible.</p>
+    <div class="r-confirm-actions">
+      <button class="r-confirm-cancel">Annuler</button>
+      <button class="r-confirm-delete">
+        <span class="material-icons-round" style="font-size:18px;">delete</span>
+        Supprimer
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+.r-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100001;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: r-fadeIn 0.2s ease;
+}
+.r-confirm-modal {
+  background: var(--r-bg);
+  border: 1px solid var(--r-border);
+  border-radius: var(--r-radius-xl);
+  box-shadow: var(--r-shadow-lg);
+  width: 100%;
+  max-width: 380px;
+  padding: 28px 24px 22px;
+  text-align: center;
+  animation: r-modalIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes r-modalIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.r-confirm-icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--r-danger-light);
+  color: var(--r-danger);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+.r-confirm-title {
+  font-size: 17px;
+  font-weight: 720;
+  color: var(--r-text-heading);
+  margin: 0 0 8px;
+}
+.r-confirm-desc {
+  font-size: 14px;
+  color: var(--r-text-muted);
+  line-height: 1.55;
+  margin: 0 0 22px;
+}
+.r-confirm-desc strong {
+  color: var(--r-text-heading);
+  font-weight: 640;
+}
+.r-confirm-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.r-confirm-cancel {
+  padding: 10px 22px;
+  font-family: var(--r-font);
+  font-size: 14px;
+  font-weight: 620;
+  color: var(--r-text-muted);
+  background: none;
+  border: 1.5px solid var(--r-border);
+  border-radius: var(--r-radius-sm);
+  cursor: pointer;
+  transition: all var(--r-transition);
+  flex: 1;
+}
+.r-confirm-cancel:hover { background: var(--r-surface); border-color: var(--r-border-strong); }
+.r-confirm-delete {
+  padding: 10px 22px;
+  font-family: var(--r-font);
+  font-size: 14px;
+  font-weight: 640;
+  color: #fff;
+  background: var(--r-danger);
+  border: 1.5px solid var(--r-danger);
+  border-radius: var(--r-radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all var(--r-transition);
+  flex: 1;
+}
+.r-confirm-delete:hover {
+  background: #be123c;
+  border-color: #be123c;
+  box-shadow: 0 3px 10px rgba(225, 29, 72, 0.25);
+}
+</style>
+
+<div style="position:relative; display:inline-block;">
+  <button class="r-ctx-trigger">
+    <span class="material-icons-round">more_horiz</span>
+  </button>
+
+  <div class="r-ctx-menu is-visible">
+    <button class="r-ctx-item">
+      <span class="material-icons-round">edit</span>
+      <span class="r-ctx-item-label">Renommer</span>
+    </button>
+    <button class="r-ctx-item">
+      <span class="material-icons-round">push_pin</span>
+      <span class="r-ctx-item-label">Épingler</span>
+    </button>
+    <button class="r-ctx-item">
+      <span class="material-icons-round">archive</span>
+      <span class="r-ctx-item-label">Archiver</span>
+    </button>
+    <button class="r-ctx-item">
+      <span class="material-icons-round">download</span>
+      <span class="r-ctx-item-label">Exporter</span>
+    </button>
+    <div class="r-ctx-divider"></div>
+    <button class="r-ctx-item r-ctx-item--danger">
+      <span class="material-icons-round">delete</span>
+      <span class="r-ctx-item-label">Supprimer</span>
+    </button>
+  </div>
+</div>
+
+<style>
+.r-ctx-trigger {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  border-radius: var(--r-radius-sm);
+  color: var(--r-text-faint);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--r-transition-fast);
+  font-family: var(--r-font);
+}
+.r-ctx-trigger .material-icons-round { font-size: 20px; }
+.r-ctx-trigger:hover { background: var(--r-surface-alt); color: var(--r-text-body); }
+
+.r-ctx-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1000;
+  min-width: 190px;
+  padding: 6px;
+  background: var(--r-bg);
+  border: 1px solid var(--r-border);
+  border-radius: var(--r-radius-md);
+  box-shadow: var(--r-shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  opacity: 0;
+  transform: translateY(-4px) scale(0.96);
+  pointer-events: none;
+  transition: all var(--r-transition-spring);
+  transform-origin: top right;
+}
+.r-ctx-menu.is-visible {
+  opacity: 1;
+  transform: translateY(4px) scale(1);
+  pointer-events: auto;
+}
+
+.r-ctx-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  border-radius: var(--r-radius-xs);
+  font-family: var(--r-font);
+  cursor: pointer;
+  transition: background var(--r-transition-fast);
+  text-align: left;
+}
+.r-ctx-item .material-icons-round {
+  font-size: 18px;
+  color: var(--r-text-faint);
+  flex-shrink: 0;
+}
+.r-ctx-item-label {
+  font-size: 13.5px;
+  font-weight: 530;
+  color: var(--r-text-body);
+}
+.r-ctx-item:hover {
+  background: var(--r-surface);
+}
+.r-ctx-item:hover .material-icons-round {
+  color: var(--r-text-body);
+}
+
+/* Danger variant */
+.r-ctx-item--danger .material-icons-round { color: var(--r-danger) !important; }
+.r-ctx-item--danger .r-ctx-item-label { color: var(--r-danger); }
+.r-ctx-item--danger:hover { background: var(--r-danger-light); }
+
+.r-ctx-divider {
+  height: 1px;
+  background: var(--r-border);
+  margin: 4px 8px;
+}
+</style>
+
+<div style="display:flex; flex-direction:column; gap:12px; align-items:flex-end; padding:16px;">
+  <!-- Envoi en cours -->
+  <div class="r-msg-status-demo">
+    <div class="r-msg-bubble-mini">Bonjour !</div>
+    <div class="r-msg-status r-msg-status--sending">
+      <span class="r-msg-status-spinner"></span>
+      <span class="r-msg-status-label">Envoi…</span>
+    </div>
+  </div>
+
+  <!-- Envoyé (1 check) -->
+  <div class="r-msg-status-demo">
+    <div class="r-msg-bubble-mini">Comment ça marche ?</div>
+    <div class="r-msg-status r-msg-status--sent">
+      <span class="material-icons-round">check</span>
+      <span class="r-msg-status-label">Envoyé</span>
+    </div>
+  </div>
+
+  <!-- Reçu (2 checks) -->
+  <div class="r-msg-status-demo">
+    <div class="r-msg-bubble-mini">Explique-moi les closures</div>
+    <div class="r-msg-status r-msg-status--delivered">
+      <span class="material-icons-round">done_all</span>
+      <span class="r-msg-status-label">14:32</span>
+    </div>
+  </div>
+
+  <!-- Erreur -->
+  <div class="r-msg-status-demo">
+    <div class="r-msg-bubble-mini r-msg-bubble-mini--error">Message non envoyé</div>
+    <div class="r-msg-status r-msg-status--error">
+      <span class="material-icons-round">error_outline</span>
+      <span class="r-msg-status-label">Échec</span>
+      <button class="r-msg-status-retry">
+        <span class="material-icons-round" style="font-size:14px;">refresh</span>
+        Réessayer
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+.r-msg-status-demo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+.r-msg-bubble-mini {
+  padding: 10px 16px;
+  background: var(--r-primary);
+  color: #fff;
+  border-radius: 16px 16px 4px 16px;
+  font-size: 14px;
+  font-weight: 480;
+  max-width: 260px;
+}
+.r-msg-bubble-mini--error {
+  background: #f87171;
+  opacity: 0.8;
+}
+
+.r-msg-status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 4px;
+}
+.r-msg-status .material-icons-round {
+  font-size: 15px;
+}
+.r-msg-status-label {
+  font-size: 11px;
+  font-weight: 550;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Sending */
+.r-msg-status--sending {
+  color: var(--r-text-faint);
+}
+@keyframes r-statusSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.r-msg-status-spinner {
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid var(--r-border);
+  border-top-color: var(--r-text-faint);
+  border-radius: 50%;
+  animation: r-statusSpin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+/* Sent */
+.r-msg-status--sent {
+  color: var(--r-text-faint);
+}
+
+/* Delivered */
+.r-msg-status--delivered {
+  color: var(--r-primary);
+}
+
+/* Error */
+.r-msg-status--error {
+  color: var(--r-danger);
+}
+.r-msg-status-retry {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 8px;
+  font-family: var(--r-font);
+  font-size: 11px;
+  font-weight: 620;
+  color: var(--r-danger);
+  background: var(--r-danger-light);
+  border: 1px solid var(--r-danger-border);
+  border-radius: var(--r-radius-full);
+  cursor: pointer;
+  margin-left: 4px;
+  transition: all var(--r-transition-fast);
+}
+.r-msg-status-retry:hover {
+  background: var(--r-danger);
+  color: #fff;
+  border-color: var(--r-danger);
+}
+</style>
+
+<div class="r-powered-by">
+  <a href="#" class="r-powered-by-link">
+    <span class="r-powered-by-text">Propulsé par</span>
+    <span class="r-powered-by-brand">
+      <span class="r-powered-by-logo">R</span>
+      <span class="r-powered-by-name">Robert AI</span>
+    </span>
+  </a>
+</div>
+
+<style>
+.r-powered-by {
+  display: flex;
+  justify-content: center;
+  padding: 6px 16px 8px;
+  background: var(--r-bg);
+  flex-shrink: 0;
+}
+.r-powered-by-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+  padding: 3px 10px;
+  border-radius: var(--r-radius-full);
+  transition: background var(--r-transition-fast);
+}
+.r-powered-by-link:hover {
+  background: var(--r-surface);
+}
+.r-powered-by-text {
+  font-size: 11px;
+  color: var(--r-text-faint);
+  font-weight: 450;
+}
+.r-powered-by-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.r-powered-by-logo {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  background: var(--r-primary);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.r-powered-by-name {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--r-text-muted);
+  letter-spacing: -0.01em;
+}
+.r-powered-by-link:hover .r-powered-by-name {
+  color: var(--r-primary);
+}
+</style>
+
+
+</div>
+</body>
+</html>
