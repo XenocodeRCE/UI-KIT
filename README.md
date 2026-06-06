@@ -6,3 +6,6 @@ Inspiré d'un design trouvé sur le net via un site de show, c'est un design min
 
 ## Philo-lycée 🟩
 Le kit actuellement utilisé sur le site où je poste mes cours de philosophie.
+
+## Robert 🐓
+Le kit fait autour de Robert, une interface assistant-IA pour AlbertAPI
